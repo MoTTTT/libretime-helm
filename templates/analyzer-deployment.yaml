@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    libretime.service: analyzer
+  name: analyzer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      libretime.service: analyzer
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        libretime.service: analyzer
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - env:
+            - name: LIBRETIME_GENERAL_PUBLIC_URL
+              value: {{ .Values.publicUrl | quote }}
+          image: {{ .Values.analyzer.repository.image }}:{{ .Values.analyzer.repository.tag }}
+          name: analyzer
+          volumeMounts:
+            - mountPath: /etc/libretime/config.yml
+              subPath: config.yml
+              name: libretime-conf
+              readOnly: true
+            - mountPath: /srv/libretime
+              name: libretime-storage
+      restartPolicy: Always
+      volumes:
+        - name: libretime-conf
+          secret:
+            secretName: libretime-conf
+            items:
+              - key: config.yml
+                path: config.yml
+{{ .Values.volumes.music | indent 8 }}

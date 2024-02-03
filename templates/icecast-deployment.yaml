@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    libretime.service: icecast
+  name: icecast
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      libretime.service: icecast
+  template:
+    metadata:
+      labels:
+        libretime.service: icecast
+    spec:
+      containers:
+        - envFrom:
+          - secretRef:
+              name: icecast-passwords
+          image: {{ .Values.icecast.repository.image }}:{{ .Values.icecast.repository.tag }}
+          name: icecast
+          ports:
+            - containerPort: {{ .Values.icecast.service.port }}
+              protocol: TCP
+      restartPolicy: Always
+      automountServiceAccountToken: false

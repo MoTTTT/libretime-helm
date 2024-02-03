@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    libretime.service: rabbitmq
+  name: rabbitmq
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      libretime.service: rabbitmq
+  template:
+    metadata:
+      labels:
+        libretime.service: rabbitmq
+    spec:
+      containers:
+        - env:
+          {{- if not .Values.rabbitmq.secret.existingSecret }}
+            - name: RABBITMQ_DEFAULT_USER
+              value: {{ .Values.rabbitmq.secret.username }}
+            - name: RABBITMQ_DEFAULT_PASS
+              value: {{ .Values.rabbitmq.secret.password }}
+          {{ end }}
+            - name: RABBITMQ_DEFAULT_VHOST
+              value: /libretime
+          {{- if .Values.rabbitmq.secret.existingSecret }}
+          envFrom:
+          - secretRef:
+              name: {{ quote .Values.rabbitmq.secret.existingSecret }}
+          {{ end }}
+          image: {{ .Values.rabbitmq.repository.image }}:{{ .Values.rabbitmq.repository.tag }}
+          livenessProbe:
+            exec:
+              command:
+                - rabbitmq-diagnostics -q ping
+          name: rabbitmq
+      restartPolicy: Always
+      automountServiceAccountToken: false

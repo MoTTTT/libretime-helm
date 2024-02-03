@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    libretime.service: worker
+  name: worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      libretime.service: worker
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        libretime.service: worker
+    spec:
+      containers:
+        - env:
+            - name: LIBRETIME_GENERAL_PUBLIC_URL
+              value: {{ .Values.publicUrl | quote }}
+          image: {{ .Values.worker.repository.image }}:{{ .Values.worker.repository.tag }}
+          name: worker
+          volumeMounts:
+            - mountPath: /etc/libretime/config.yml
+              subPath: config.yml
+              name: libretime-conf
+              readOnly: true
+      restartPolicy: Always
+      automountServiceAccountToken: false
+      volumes:
+        - name: libretime-conf
+          secret:
+            secretName: libretime-conf
+            items:
+              - key: config.yml
+                path: config.yml

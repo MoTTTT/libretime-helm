@@ -1,0 +1,22 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: icecast
+spec:
+  routes:
+    - kind: Rule
+      match: Host(`{{ .Values.streamHost }}`)
+      services:
+        - kind: Service
+          name: icecast
+          port: {{ .Values.icecast.service.port }}
+{{- if eq .Values.icecast.ingress.auth.enabled true }}
+    - kind: Rule
+      match: Host(`{{ .Values.streamHost }}`) && PathPrefix(`/{{ .Values.icecast.stream.mountpoint }}`)
+      middlewares:
+        - name: {{ quote .Values.icecast.ingress.auth.secretName }}
+      services:
+        - kind: Service
+          name: icecast
+          port: {{ .Values.icecast.service.port }}
+{{ end }}

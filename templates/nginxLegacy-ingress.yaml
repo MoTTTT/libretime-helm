@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: web
+  {{- if .Values.nginx.ingress.annotations }}
+  annotations:
+    {{ .Values.nginx.ingress.annotations }}
+  {{ end }}
+spec:
+  rules:
+    - host: {{ .Values.publicHost }}
+      http:
+        paths:
+          - backend:
+              service:
+                name: web
+                port:
+                  number: {{ .Values.nginx.service.port }}
+            path: /
+            pathType: Prefix
+  tls:
+    - hosts:
+        - {{ .Values.publicHost }}

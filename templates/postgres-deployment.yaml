@@ -1,0 +1,56 @@
+{{- if not .Values.postgres.external }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    libretime.service: postgres
+  name: postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      libretime.service: postgres
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        libretime.service: postgres
+    spec:
+      containers:
+        - image: "{{ .Values.postgres.repository.image }}:{{ .Values.postgres.repository.tag }}"
+        {{- if not .Values.postgres.secret.existingSecret }}
+          env:
+          - name: POSTGRES_USER
+            value: {{ quote .Values.postgres.secret.username }}
+          - name: POSTGRES_PASSWORD
+            value: {{ quote .Values.postgres.secret.password }}
+        {{ end }}
+        {{- if .Values.postgres.secret.existingSecret }}
+          envFrom:
+          - secretRef:
+              name: {{ quote .Values.postgres.secret.existingSecret }}
+        {{ end }}
+          livenessProbe:
+            exec:
+              command:
+                - pg_isready -U libretime
+          name: postgres
+          ports:
+            - name: postgres
+              containerPort: {{ .Values.postgres.service.port }}
+{{- if .Values.postgres.persistence.existingPVC }}
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              subPath: data
+              name: postgres-data
+{{ end }}
+      restartPolicy: Always
+      automountServiceAccountToken: false
+{{- if .Values.postgres.persistence.existingPVC }}
+      volumes:
+        - name: postgres-data
+          persistentVolumeClaim:
+            claimName: {{ quote .Values.postgres.persistence.existingPVC }}
+{{ end }}
+{{ end }}

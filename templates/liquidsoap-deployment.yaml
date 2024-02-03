@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    libretime.service: liquidsoap-playout
+  name: liquidsoap-playout
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      libretime.service: liquidsoap-playout
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        libretime.service: liquidsoap-playout
+    spec:
+      containers:
+        - env:
+            - name: LIBRETIME_GENERAL_PUBLIC_URL
+              value: http://web.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.nginx.service.port }}
+          image: {{ .Values.liquidsoap.repository.image }}:{{ .Values.liquidsoap.repository.tag }}
+          name: playout
+          volumeMounts:
+            - mountPath: /etc/libretime/config.yml
+              subPath: config.yml
+              name: libretime-conf
+              readOnly: true
+            - mountPath: /app
+              name: libretime-playout
+        - args:
+            - /usr/local/bin/libretime-liquidsoap
+          env:
+            - name: LIBRETIME_GENERAL_PUBLIC_URL
+              value: http://web.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.nginx.service.port }}
+          image: {{ .Values.playout.repository.image }}:{{ .Values.playout.repository.tag }}
+          name: liquidsoap
+          ports:
+            - containerPort: 8001
+              protocol: TCP
+            - containerPort: 8002
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /etc/libretime/config.yml
+              subPath: config.yml
+              name: libretime-conf
+              readOnly: true
+            - mountPath: /app
+              name: libretime-playout
+      restartPolicy: Always
+      automountServiceAccountToken: false
+      volumes:
+        - name: libretime-playout
+          emptyDir:
+            sizeLimit: 100Mi
+        - name: libretime-conf
+          secret:
+            secretName: libretime-conf
+            items:
+              - key: config.yml
+                path: config.yml

@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    libretime.service: liquidsoap
+  name: liquidsoap
+spec:
+  ports:
+    - name: "8001"
+      port: 8001
+      targetPort: 8001
+    - name: "8002"
+      port: 8002
+      targetPort: 8002
+  selector:
+    libretime.service: liquidsoap-playout

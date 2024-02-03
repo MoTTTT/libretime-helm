@@ -1,0 +1,19 @@
+name: libretime
+description: A Helm chart for libretime 4.x.x
+version: 0.0.1
+apiVersion: v2
+keywords:
+  - libretime
+  - radio
+  - streaming
+  - icecast
+  - nginx
+  - rabbitmq
+  - postgres
+sources:
+  - https://github.com/libretime/libretime
+appVersion: "4.0.0"
+home: https://github.com/unbelauscht/libretime-helm
+maintainers:
+  - name: unbelauscht
+    url: github.com/unbelauscht

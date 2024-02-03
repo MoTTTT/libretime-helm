@@ -1,0 +1,113 @@
+# Volume to store your uploaded music
+volumes:
+  music: |
+    - name: libretime-storage
+      nfs:
+        server: nas
+        path: /LibretimeMusic
+
+# Can also be a PVC
+# volumes:
+#   music: |
+#     - name: libretime-storage
+#       persistentVolumeClaim:
+#         claimName: libretime-storage
+  # # TODO: Fix this in the templates
+  # persistence:
+  #   existingClaim: libretime-storage
+
+publicUrl: https://radio.example.com:443
+publicHost: radio.example.net
+streamUrl: https://stream.example.com/main
+streamHost: stream.example.com
+
+nginx:
+  repository:
+    image: nginx
+    tag: latest
+  service:
+    port: 8080 # change, if you know what you're doing
+  ingress:
+    annotations:
+api:
+  repository:
+    image: ghcr.io/libretime/libretime-api
+    tag: latest
+  service:
+    port: 9001 # do not change, it will break
+  config:
+    general:
+      api_key: libretime
+      secret_key: libretime
+      allowed_cors_origins:
+        - "https://publicUrl"
+      timezone: UTC
+      cache_ahead_hours: 1
+      auth: local
+postgres:
+  external: false
+  repository:
+    image: postgres
+    tag: "15"
+  secret:
+    existingSecret: "" # prod: set the name of your generated secret to keep your data safe
+    username: libretime
+    password: libretime
+  persistence:
+    existingClaim: "" # prod: set the name of your PVC to keep your data
+  service:
+    port: 5432 # do not change, it will break
+rabbitmq:
+  repository:
+    image: rabbitmq
+    tag: 3.12-alpine
+  secret:
+    existingSecret: "" # Use an existing secret pls
+    username: libretime
+    password: libretime
+  service:
+    port: 5672 # do not change, it will break
+playout:
+  repository:
+    image: ghcr.io/libretime/libretime-playout
+    tag: latest
+liquidsoap:
+  repository:
+    image: ghcr.io/libretime/libretime-playout
+    tag: latest
+analyzer:
+  repository:
+    image: ghcr.io/libretime/libretime-analyzer
+    tag: latest
+worker:
+  repository:
+    image: ghcr.io/libretime/libretime-worker
+    tag: latest
+legacy:
+  repository:
+    image: ghcr.io/libretime/libretime-legacy
+    tag: latest
+  service:
+    port: 9000 # do not change, it will break
+icecast:
+  repository:
+    image: ghcr.io/libretime/icecast
+    tag: "2.4.4"
+  stream:
+    name: Libretime.fm
+    mountpoint: main
+    description: Libretime.fm
+    website: https://radio.example.com
+    genre: "Libretime.fm"
+    passwords:
+      source: libretime
+      admin: libretime
+      relay: libretime
+  service:
+    port: 8000 # do not change, it will break
+  ingress:
+    auth:
+      enabled: false # requires traefik
+      secretName: icecast-listener-password # required value if enabled
+      username: listener
+      password: libretime

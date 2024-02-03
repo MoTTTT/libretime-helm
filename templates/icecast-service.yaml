@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    libretime.service: icecast
+  name: icecast
+spec:
+  ports:
+    - name: {{ .Values.icecast.service.port | quote }}
+      port: {{ .Values.icecast.service.port }}
+      targetPort: {{ .Values.icecast.service.port }}
+  selector:
+    libretime.service: icecast

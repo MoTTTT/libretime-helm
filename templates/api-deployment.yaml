@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    libretime.service: api
+  name: api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      libretime.service: api
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        libretime.service: api
+    spec:
+      initContainers:
+      - name: run-migration
+        image: "{{ .Values.api.repository.image }}:{{ .Values.api.repository.tag }}"
+        command: ['sh', '-c', 'libretime-api migrate']
+        volumeMounts:
+          - mountPath: /etc/libretime/config.yml
+            subPath: config.yml
+            name: libretime-conf
+            readOnly: true
+          - mountPath: /srv/libretime
+            name: libretime-storage
+      containers:
+        - image: "{{ .Values.api.repository.image }}:{{ .Values.api.repository.tag }}"
+          name: api
+          volumeMounts:
+            - mountPath: /etc/libretime/config.yml
+              subPath: config.yml
+              name: libretime-conf
+              readOnly: true
+            - mountPath: /srv/libretime
+              name: libretime-storage
+      restartPolicy: Always
+      automountServiceAccountToken: false
+      volumes:
+        - name: libretime-conf
+          secret:
+            secretName: libretime-conf
+            items:
+              - key: config.yml
+                path: config.yml
+{{ .Values.volumes.music | indent 8 }}
