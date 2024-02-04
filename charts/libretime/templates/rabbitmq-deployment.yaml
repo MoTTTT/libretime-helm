@@ -22,12 +22,23 @@ spec:
             - name: RABBITMQ_DEFAULT_PASS
               value: {{ .Values.rabbitmq.secret.password }}
           {{ end }}
+          {{- if .Values.rabbitmq.secret.existingSecret }}
             - name: RABBITMQ_DEFAULT_VHOST
               value: /libretime
+          {{ end }}
           {{- if .Values.rabbitmq.secret.existingSecret }}
-          envFrom:
-          - secretRef:
-              name: {{ quote .Values.rabbitmq.secret.existingSecret }}
+            - name: RABBITMQ_DEFAULT_USER
+              valueFrom:
+                secretKeyRef:
+                  key: username
+                  name: {{ .Values.rabbitmq.secret.existingSecret }}
+                  optional: false
+            - name: RABBITMQ_DEFAULT_PASS
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: {{ .Values.rabbitmq.secret.existingSecret }}
+                  optional: false
           {{ end }}
           image: {{ .Values.rabbitmq.repository.image }}:{{ .Values.rabbitmq.repository.tag }}
           livenessProbe:

@@ -45,23 +45,15 @@ stringData:
     database:
       # The hostname of the PostgreSQL server.
       # > default is localhost
-      host: postgres
-      # The port of the PostgreSQL server.
-      # > default is 5432
+      host: postgres.{{ .Release.Namespace }}.svc.cluster.local
       port: 5432
-      # The name of the PostgreSQL database.
-      # > default is libretime
       name: libretime
-      # The username of the PostgreSQL user.
-      # > default is libretime
       {{- if .Values.postgres.secret.existingSecret }}
       {{- $secretObj := (lookup "v1" "Secret" .Release.Namespace .Values.postgres.secret.existingSecret) | default dict }}
       {{- $secretData := (get $secretObj "data") | default dict }}
       {{- $postgresUser := (get $secretData "username") }}
       {{- $postgresPass := (get $secretData "password") }}
       user: {{ $postgresUser }}
-      # The password of the PostgreSQL user.
-      # > default is libretime
       password: {{ $postgresPass }}
       {{- else }}
       user: {{ .Values.postgres.secret.username }}
@@ -69,21 +61,22 @@ stringData:
       {{ end }}
 
     rabbitmq:
-      # The hostname of the RabbitMQ server.
-      # > default is localhost
-      host: rabbitmq
-      # The port of the RabbitMQ server.
-      # > default is 5672
+      host: rabbitmq.{{ .Release.Namespace }}.svc.cluster.local
       port: {{ .Values.rabbitmq.service.port }}
       # The virtual host of RabbitMQ server.
       # > default is /libretime
       vhost: /libretime
-      # The username of the RabbitMQ user.
-      # > default is libretime
+      {{- if .Values.rabbitmq.secret.existingSecret }}
+      {{- $secretObj := (lookup "v1" "Secret" .Release.Namespace .Values.rabbitmq.secret.existingSecret) | default dict }}
+      {{- $secretData := (get $secretObj "data") | default dict }}
+      {{- $rabbitmqUser := (get $secretData "username") }}
+      {{- $rabbitmqPass := (get $secretData "password") }}
+      user: {{ $rabbitmqUser }}
+      password: {{ $rabbitmqPass }}
+      {{- else }}
       user: {{ .Values.rabbitmq.secret.username }}
-      # The password of the RabbitMQ user.
-      # > default is libretime
       password: {{ .Values.rabbitmq.secret.password }}
+      {{ end }}
 
     email:
       # Sender email address to use when sending emails.
