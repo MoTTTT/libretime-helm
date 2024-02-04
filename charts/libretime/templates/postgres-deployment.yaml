@@ -19,17 +19,26 @@ spec:
     spec:
       containers:
         - image: "{{ .Values.postgres.repository.image }}:{{ .Values.postgres.repository.tag }}"
-        {{- if not .Values.postgres.secret.existingSecret }}
           env:
+          {{- if not .Values.postgres.secret.existingSecret }}
           - name: POSTGRES_USER
             value: {{ quote .Values.postgres.secret.username }}
           - name: POSTGRES_PASSWORD
             value: {{ quote .Values.postgres.secret.password }}
-        {{ end }}
-        {{- if .Values.postgres.secret.existingSecret }}
-          envFrom:
-          - secretRef:
-              name: {{ quote .Values.postgres.secret.existingSecret }}
+          {{ end }}
+          {{- if .Values.postgres.secret.existingSecret }}
+          - name: POSTGRES_USER
+            valueFrom:
+              secretKeyRef:
+                key: username
+                name: {{ .Values.postgres.secret.existingSecret }}
+                optional: false
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: password
+                name: {{ .Values.postgres.secret.existingSecret }}
+                optional: false
         {{ end }}
           livenessProbe:
             exec:
