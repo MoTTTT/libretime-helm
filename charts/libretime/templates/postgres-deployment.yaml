@@ -48,7 +48,7 @@ spec:
           ports:
             - name: postgres
               containerPort: {{ .Values.postgres.service.port }}
-{{- if .Values.postgres.persistence.existingPVC }}
+{{- if .Values.postgres.persistence.existingClaim }}
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
               subPath: data
@@ -56,10 +56,10 @@ spec:
 {{ end }}
       restartPolicy: Always
       automountServiceAccountToken: false
-{{- if .Values.postgres.persistence.existingPVC }}
+{{- if .Values.postgres.persistence.existingClaim }}
       volumes:
         - name: postgres-data
           persistentVolumeClaim:
-            claimName: {{ quote .Values.postgres.persistence.existingPVC }}
+            claimName: {{ quote .Values.postgres.persistence.existingClaim }}
 {{ end }}
 {{ end }}
