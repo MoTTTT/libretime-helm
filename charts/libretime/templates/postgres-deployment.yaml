@@ -20,6 +20,8 @@ spec:
       containers:
         - image: "{{ .Values.postgres.repository.image }}:{{ .Values.postgres.repository.tag }}"
           env:
+          - name: POSTGRES_DB
+            value: libretime
           {{- if not .Values.postgres.secret.existingSecret }}
           - name: POSTGRES_USER
             value: {{ quote .Values.postgres.secret.username }}
