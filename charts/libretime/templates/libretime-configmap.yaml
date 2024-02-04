@@ -49,10 +49,10 @@ stringData:
       port: 5432
       name: libretime
       {{- if .Values.postgres.secret.existingSecret }}
-      {{- $secretObj := (lookup "v1" "Secret" .Release.Namespace .Values.postgres.secret.existingSecret) | default dict }}
-      {{- $secretData := (get $secretObj "data") | default dict }}
-      {{- $postgresUser := (get $secretData "username") }}
-      {{- $postgresPass := (get $secretData "password") }}
+      {{- $pgObj := (lookup "v1" "Secret" .Release.Namespace .Values.postgres.secret.existingSecret) | default dict }}
+      {{- $pgSecretData := (get $pgObj "data") | default dict }}
+      {{- $postgresUser := (get $pgSecretData "username") }}
+      {{- $postgresPass := (get $pgSecretData "password") }}
       user: {{ $postgresUser }}
       password: {{ $postgresPass }}
       {{- else }}
@@ -67,10 +67,10 @@ stringData:
       # > default is /libretime
       vhost: /libretime
       {{- if .Values.rabbitmq.secret.existingSecret }}
-      {{- $secretObj := (lookup "v1" "Secret" .Release.Namespace .Values.rabbitmq.secret.existingSecret) | default dict }}
-      {{- $secretData := (get $secretObj "data") | default dict }}
-      {{- $rabbitmqUser := (get $secretData "username") }}
-      {{- $rabbitmqPass := (get $secretData "password") }}
+      {{- $rmqsecretObj := (lookup "v1" "Secret" .Release.Namespace .Values.rabbitmq.secret.existingSecret) | default dict }}
+      {{- $rmqSecretData := (get $rmqsecretObj "data") | default dict }}
+      {{- $rabbitmqUser := (get $rmqSecretData "username") }}
+      {{- $rabbitmqPass := (get $rmqSecretData "password") }}
       user: {{ $rabbitmqUser }}
       password: {{ $rabbitmqPass }}
       {{- else }}
