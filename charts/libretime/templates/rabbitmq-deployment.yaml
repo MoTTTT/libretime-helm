@@ -16,15 +16,13 @@ spec:
     spec:
       containers:
         - env:
+            - name: RABBITMQ_DEFAULT_VHOST
+              value: /libretime
           {{- if not .Values.rabbitmq.secret.existingSecret }}
             - name: RABBITMQ_DEFAULT_USER
               value: {{ .Values.rabbitmq.secret.username }}
             - name: RABBITMQ_DEFAULT_PASS
               value: {{ .Values.rabbitmq.secret.password }}
-          {{ end }}
-          {{- if .Values.rabbitmq.secret.existingSecret }}
-            - name: RABBITMQ_DEFAULT_VHOST
-              value: /libretime
           {{ end }}
           {{- if .Values.rabbitmq.secret.existingSecret }}
             - name: RABBITMQ_DEFAULT_USER
