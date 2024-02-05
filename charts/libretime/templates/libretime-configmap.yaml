@@ -61,7 +61,7 @@ stringData:
       {{ end }}
 
     rabbitmq:
-      host: rabbitmq.{{ .Release.Namespace }}.svc.cluster.local
+      host: rabbitmq
       port: {{ .Values.rabbitmq.service.port }}
       # The virtual host of RabbitMQ server.
       # > default is /libretime
