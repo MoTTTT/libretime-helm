@@ -35,6 +35,9 @@ spec:
               name: libretime-assets
             - mountPath: /srv/libretime
               name: libretime-storage
+            - mountPath: /tmp
+              subPath: ".tmp"
+              name: libretime-storage
           ports:
             - containerPort: {{ .Values.legacy.service.port }}
               protocol: TCP
