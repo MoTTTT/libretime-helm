@@ -53,7 +53,7 @@ spec:
       volumes:
         - name: libretime-playout
           emptyDir:
-            sizeLimit: 100Mi
+            sizeLimit: 4Gi
         - name: libretime-conf
           secret:
             secretName: libretime-conf
