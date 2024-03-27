@@ -13,7 +13,7 @@ keywords:
 sources:
   - https://github.com/libretime/libretime
 appVersion: "4.0.0"
-home: https://github.com/unbelauscht/libretime-helm
+home: https://github.com/MoTTTT/libretime-helm
 maintainers:
-  - name: unbelauscht
-    url: github.com/unbelauscht
+  - name: MoTTTT
+    url: github.com/MoTTTT
