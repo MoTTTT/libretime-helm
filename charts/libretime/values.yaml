@@ -2,19 +2,8 @@
 volumes:
   music: |
     - name: libretime-storage
-      nfs:
-        server: nas
-        path: /LibretimeMusic
-
-# Can also be a PVC
-# volumes:
-#   music: |
-#     - name: libretime-storage
-#       persistentVolumeClaim:
-#         claimName: libretime-storage
-  # # TODO: Fix this in the templates
-  # persistence:
-  #   existingClaim: libretime-storage
+      persistentVolumeClaim:
+        claimName: libretime-storage
 
 publicUrl: https://console.thruhere.net
 publicHost: console.thruhere.net
