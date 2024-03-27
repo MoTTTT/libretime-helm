@@ -4,7 +4,7 @@ This repo is forked from the public repo at <https://github.com/unbelauscht/libr
 
 It has been adjusted to use nginx as ingress, rather than traefik, because nginx ingress is already in use.
 
-Chart.yaml has also been updated to refer to this repo,, and myself as maintainer.
+Chart.yaml has also been updated to refer to this repo, and myself as maintainer.
 
 ## Original README.md
 
