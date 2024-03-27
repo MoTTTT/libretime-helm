@@ -7,6 +7,7 @@ metadata:
     {{ .Values.nginx.ingress.annotations }}
   {{ end }}
 spec:
+  ingressClassName: nginx
   rules:
     - host: {{ .Values.publicHost }}
       http:

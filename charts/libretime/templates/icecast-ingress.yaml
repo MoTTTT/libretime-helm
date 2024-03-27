@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: icecast
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - {{ .Values.streamHost }}
+      secretName: {{ .Values.streamHost }}-cert
+  rules:
+    - host: {{ .Values.streamHost }}
+      http:
+        paths:
+          - path: /{{ .Values.icecast.stream.mountpoint }}
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: icecast
+                port:
+                  number: {{ .Values.icecast.service.port }}
