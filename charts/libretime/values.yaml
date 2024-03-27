@@ -2,8 +2,20 @@
 volumes:
   music: |
     - name: libretime-storage
-      persistentVolumeClaim:
-        claimName: libretime-storage
+      nfs:
+        server: dataserver
+        path: /nfs/LibretimeMusic
+
+nfs-storage:
+  server: 192.168.1.26
+  share: /Data01/nfs
+
+# ceph-rbd did not work - multiple rw binds defined
+# volumes:
+#   music: |
+#     - name: libretime-storage
+#       persistentVolumeClaim:
+#         claimName: libretime-storage
 
 publicUrl: https://console.thruhere.net
 publicHost: console.thruhere.net

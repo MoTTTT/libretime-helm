@@ -1,0 +1,19 @@
+# sc-nfs.yaml
+# 192.168.1.26 dataserver
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: nfs-csi
+provisioner: nfs.csi.k8s.io
+parameters:
+  server: {{ .Values.nfs-storage.server }}
+  share: {{ .Values.nfs-storage.share }}
+reclaimPolicy: Delete
+volumeBindingMode: Immediate
+mountOptions:
+  - hard
+  - nfsvers=4.1
+
+192.168.1.26
+ /Data01/nfs

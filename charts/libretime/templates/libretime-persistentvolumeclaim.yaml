@@ -4,8 +4,8 @@ metadata:
   name: libretime-storage
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: 10Gi
-  storageClassName: ceph-rbd
+  storageClassName: nfs-csi
