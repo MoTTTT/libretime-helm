@@ -94,7 +94,7 @@ icecast:
       relay: libretime
   service:
     port: 8000 # do not change, it will break
-ingress:
+  ingress:
     auth:
       enabled: false # requires traefik
       secretName: icecast-listener-password # required value if enabled
