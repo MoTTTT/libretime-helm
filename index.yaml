@@ -3,9 +3,9 @@ entries:
   libretime:
   - apiVersion: v2
     appVersion: 4.0.0
-    created: "2024-03-27T00:30:49.610899Z"
+    created: "2024-03-27T01:02:45.070899Z"
     description: A Helm chart for libretime 4.x.x
-    digest: 65dd25ba67fff927f5a29e70bbdd5b5ee0838083b9476e9bcf24942066d75b80
+    digest: 23ea776fc0576e59ad51b298b0050c25238856ebd4b24f76cc8b0ca3936321e8
     home: https://github.com/MoTTTT/libretime-helm
     keywords:
     - libretime
@@ -24,4 +24,4 @@ entries:
     urls:
     - libretime-0.0.1.tgz
     version: 0.0.1
-generated: "2024-03-27T00:30:49.609177Z"
+generated: "2024-03-27T01:02:45.069729Z"
