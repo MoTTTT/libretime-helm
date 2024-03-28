@@ -2,9 +2,8 @@
 volumes:
   music: |
     - name: libretime-storage
-      nfs:
-        server: 192.168.1.26
-        path: /Data2/nfs/
+      persistentVolumeClaim:
+        claimName: libretime-storage
 
 nfsStorage:
   server: 192.168.1.26
