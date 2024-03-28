@@ -1,9 +1,16 @@
 # Volume to store your uploaded music
+#volumes:
+#  music: |
+#    - name: libretime-storage
+#      persistentVolumeClaim:
+#        claimName: libretime-storage
+
 volumes:
   music: |
     - name: libretime-storage
-      persistentVolumeClaim:
-        claimName: libretime-storage
+      nfs:
+        server: 192.168.1.26
+        path: /Data01/nfs
 
 nfsStorage:
   server: 192.168.1.26
