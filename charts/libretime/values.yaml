@@ -3,8 +3,8 @@ volumes:
   music: |
     - name: libretime-storage
       nfs:
-        server: dataserver
-        path: /nfs/LibretimeMusic
+        server: 192.168.1.26
+        path: /Data2/nfs/
 
 nfsStorage:
   server: 192.168.1.26
