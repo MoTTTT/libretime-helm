@@ -15,7 +15,7 @@ spec:
     - host: {{ .Values.streamHost }}
       http:
         paths:
-          - path: /{{ .Values.icecast.stream.mountpoint }}
+          - path: /
             pathType: ImplementationSpecific
             backend:
               service:
