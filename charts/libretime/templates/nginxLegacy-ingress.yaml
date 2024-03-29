@@ -1,4 +1,4 @@
-apiVersion: networking.k8s.io/v1
+apiVersion: networking.k8s.io/v1 
 kind: Ingress
 metadata:
   name: web
@@ -22,3 +22,4 @@ spec:
   tls:
     - hosts:
         - {{ .Values.publicHost }}
+      secretName: {{ .Values.publicHost }}-cert

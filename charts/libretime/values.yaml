@@ -36,6 +36,8 @@ nginx:
     port: 8080 # change, if you know what you're doing
   ingress:
     annotations:
+      cert-manager.io/cluster-issuer: lets-encrypt
+      kubernetes.io/ingress.class: nginx
 api:
   repository:
     image: ghcr.io/libretime/libretime-api

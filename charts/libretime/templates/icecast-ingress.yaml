@@ -1,7 +1,11 @@
-apiVersion: networking.k8s.io/v1
+apiVersion: networking.k8s.io/v1  
 kind: Ingress
 metadata:
   name: icecast
+  {{- if .Values.nginx.ingress.annotations }}
+  annotations:
+    {{ .Values.nginx.ingress.annotations }}
+  {{ end }}
 spec:
   ingressClassName: nginx
   tls:
