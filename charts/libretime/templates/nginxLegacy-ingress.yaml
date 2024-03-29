@@ -2,12 +2,15 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: web
-  {{- if .Values.nginx.ingress.annotations }}
   annotations:
-    {{ .Values.nginx.ingress.annotations }}
-  {{ end }}
+    cert-manager.io/cluster-issuer: lets-encrypt
+    kubernetes.io/ingress.class: nginx
 spec:
   ingressClassName: nginx
+  tls:
+    - hosts:
+        - {{ .Values.publicHost }}
+      secretName: {{ .Values.publicHost }}-cert
   rules:
     - host: {{ .Values.publicHost }}
       http:
@@ -19,7 +22,4 @@ spec:
                   number: {{ .Values.nginx.service.port }}
             path: /
             pathType: Prefix
-  tls:
-    - hosts:
-        - {{ .Values.publicHost }}
-      secretName: {{ .Values.publicHost }}-cert
+
