@@ -27,8 +27,8 @@ publicUrl: https://console.thruhere.net
 publicHost: console.thruhere.net
 streamUrl: https://radio.thruhere.net/main
 streamHost: radio.thruhere.net
-dj.host: dj.radio.thruhere.net
-master.host: master.radio.thruhere.net
+djHost: dj.radio.thruhere.net
+masterHost: master.radio.thruhere.net
 
 nginx:
   repository:

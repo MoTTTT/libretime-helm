@@ -1,0 +1,5 @@
+The following URLs are exposed:
+Libretime Web URL: https://{{ .Values.publicHost }}/ 
+Listen URL: https://{{ .Values.streamHost }}/ 
+DJ Port: https://{{ .Values.djHost }}/ 
+Master Port: https://{{ .Values.masterHost }}/ 
