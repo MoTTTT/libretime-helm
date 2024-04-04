@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1  
+kind: Ingress
+metadata:
+  name: dj
+  annotations:
+    cert-manager.io/cluster-issuer: lets-encrypt
+    kubernetes.io/ingress.class: nginx
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - {{ .Values.dj.host }}
+      secretName: {{ .Values.dj.host }}-cert
+  rules:
+    - host: {{ .Values.dj.host }}
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: liquidsoap
+                port:
+                  number: 8002
+

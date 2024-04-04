@@ -152,7 +152,7 @@ stringData:
       harbor_ssl_password:
 
     stream:
-      # Inputs sources.
+      # Inputs sources. 
       inputs:
         # Main harbor input.
         main:
