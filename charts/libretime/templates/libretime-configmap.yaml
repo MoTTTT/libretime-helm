@@ -81,14 +81,14 @@ stringData:
     email:
       # Sender email address to use when sending emails.
       # > default is no-reply@libretime.org
-      from_address: no-reply@libretime.org
+      from_address: {{ .Values.email.fromaddress }}
 
       # The hostname of the SMTP server.
       # > default is localhost
-      host: localhost
+      host: {{ .Values.email.host }}
       # The port of the SMTP server.
       # > default is 25
-      port: 25
+      port: {{ .Values.email.port }}
       # Whether to use an insecure connection, an SSL/TLS (implicit) connection (generally
       # on port 465) or a STARTTLS (explicit) connection (generally on port 587) when
       # talking to the SMTP server.

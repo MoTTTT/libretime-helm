@@ -1,10 +1,3 @@
-# Volume to store your uploaded music
-#volumes:
-#  music: |
-#    - name: libretime-storage
-#      persistentVolumeClaim:
-#        claimName: libretime-storage
-
 volumes:
   music: |
     - name: libretime-storage
@@ -12,23 +5,10 @@ volumes:
         server: 192.168.1.26
         path: /Data02/radio
 
-nfsStorage:
-  server: 192.168.1.26
-  share: /Data01/nfs
-
-# ceph-rbd did not work - multiple rw binds defined
-# volumes:
-#   music: |
-#     - name: libretime-storage
-#       persistentVolumeClaim:
-#         claimName: libretime-storage
-
 publicUrl: https://console.thruhere.net
 publicHost: console.thruhere.net
 streamUrl: https://radio.thruhere.net/main
 streamHost: radio.thruhere.net
-djHost: dj.radio.thruhere.net
-masterHost: master.radio.thruhere.net
 
 nginx:
   repository:
@@ -52,9 +32,13 @@ api:
       secret_key: libretime
       allowed_cors_origins:
         - "https://publicUrl"
-      timezone: UTC
+      timezone: Europe/London
       cache_ahead_hours: 1
       auth: local
+email:
+  fromaddress: admin@jam.radio.fm
+  host: localhost
+  port: 25
 postgres:
   external: false
   repository:
@@ -116,9 +100,4 @@ icecast:
       relay: libretime
   service:
     port: 8000 # do not change, it will break
-  ingress:
-    auth:
-      enabled: false # requires traefik
-      secretName: icecast-listener-password # required value if enabled
-      username: listener
-      password: libretime
+
