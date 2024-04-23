@@ -207,7 +207,7 @@ stringData:
             enabled: true
             mount: {{ .Values.icecast.stream.mountpoint }}
             audio:
-              format: ogg
+              format: mp3
               bitrate: 256
               enable_metadata: false
             mobile: false
