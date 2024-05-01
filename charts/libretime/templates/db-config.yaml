@@ -5,6 +5,6 @@ metadata:
   labels:
     app: postgres
 data:
-  POSTGRES_DB: postgresdb
+  POSTGRES_DB: libretime
   POSTGRES_USER: {{ .Values.postgres.secret.username }}
   PGDATA: /var/lib/postgresql/data/pgdata
