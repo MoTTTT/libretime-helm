@@ -15,7 +15,7 @@ nginx:
     image: nginx
     tag: latest
   service:
-    port: 8080 # change, if you know what you're doing
+    port: 8080
   ingress:
     annotations:
       cert-manager.io/cluster-issuer: lets-encrypt
@@ -25,7 +25,7 @@ api:
     image: ghcr.io/libretime/libretime-api
     tag: latest
   service:
-    port: 9001 # do not change, it will break
+    port: 9001
   config:
     general:
       api_key: libretime
@@ -36,7 +36,7 @@ api:
       cache_ahead_hours: 1
       auth: local
 email:
-  fromaddress: admin@jam.radio.fm
+  fromaddress: admin@radio.thruhere.net
   host: localhost
   port: 25
 postgres:
@@ -45,23 +45,24 @@ postgres:
     image: postgres
     tag: "15"
   secret:
-    existingSecret: "" # prod: set the name of your generated secret to keep your data safe
+    existingSecret: "" 
     username: libretime
-    password: libretimePassword
+    password: admin
+    passwordBase64:  YWRtaW4=    # For db statefulset, base64 encoded value. YWRtaW4= "admin"
   persistence:
-    existingClaim: "" # prod: set the name of your PVC to keep your data
+    existingClaim: ""
   service:
-    port: 5432 # do not change, it will break
+    port: 5432
 rabbitmq:
   repository:
     image: rabbitmq
     tag: 3.12-alpine
   secret:
-    existingSecret: "" # Use an existing secret pls
+    existingSecret: ""
     username: libretime
     password: libretimePassword
   service:
-    port: 5672 # do not change, it will break
+    port: 5672
 playout:
   repository:
     image: ghcr.io/libretime/libretime-playout
@@ -83,7 +84,7 @@ legacy:
     image: ghcr.io/libretime/libretime-legacy
     tag: latest
   service:
-    port: 9000 # do not change, it will break
+    port: 9000
 icecast:
   repository:
     image: ghcr.io/libretime/icecast
@@ -99,5 +100,5 @@ icecast:
       admin: libretime
       relay: libretime
   service:
-    port: 8000 # do not change, it will break
+    port: 8000
 

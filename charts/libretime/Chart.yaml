@@ -1,6 +1,6 @@
 name: libretime
 description: A Helm chart for libretime
-version: 0.2.2
+version: 0.3.0
 apiVersion: v2
 keywords:
   - libretime
