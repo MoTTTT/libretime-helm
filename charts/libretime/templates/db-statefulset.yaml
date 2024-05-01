@@ -16,8 +16,8 @@ spec:
         libretime.service: postgres
     spec:
       containers:
-        - image: "{{ .Values.postgres.repository.image }}:{{ .Values.postgres.repository.tag }}"
         - name: postgres
+          image: "{{ .Values.postgres.repository.image }}:{{ .Values.postgres.repository.tag }}"
           imagePullPolicy: "IfNotPresent"
           ports:
             - containerPort: {{ .Values.postgres.service.port }}
