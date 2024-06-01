@@ -23,5 +23,15 @@ spec:
           ports:
             - containerPort: {{ .Values.icecast.service.port }}
               protocol: TCP
+            - containerPort: {{ .Values.icecast.service.streamPort1 }}
+              protocol: TCP
+            - containerPort: {{ .Values.icecast.service.streamPort2 }}
+              protocol: TCP
+            - containerPort: {{ .Values.icecast.service.streamPort3 }}
+              protocol: TCP
+            - containerPort: {{ .Values.icecast.service.streamPort4 }}
+              protocol: TCP
+            - containerPort: {{ .Values.icecast.service.streamPort5 }}
+              protocol: TCP
       restartPolicy: Always
       automountServiceAccountToken: false

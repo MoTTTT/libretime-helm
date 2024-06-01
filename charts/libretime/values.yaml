@@ -9,6 +9,7 @@ publicUrl: https://console.thruhere.net
 publicHost: console.thruhere.net
 streamUrl: https://radio.thruhere.net/main
 streamHost: radio.thruhere.net
+showHost: show.thruhere.net
 
 nginx:
   repository:
@@ -101,4 +102,8 @@ icecast:
       relay: libretime
   service:
     port: 8000
-
+    streamPort1: 8003
+    streamPort2: 8004
+    streamPort3: 8005
+    streamPort4: 8006
+    streamPort5: 8007
