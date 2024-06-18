@@ -26,7 +26,6 @@ spec:
                   name: libretime-storage
                 - mountPath: /library
                   name: libretime-library
-          restartPolicy: OnFailure
           volumes:
             - name: libretime-conf
               secret:
