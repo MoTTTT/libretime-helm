@@ -1,5 +1,5 @@
 library-scan:
-  schedule: "0 0 * * *"
+  schedule: "*/10 * * * *"
 volumes: 
   music: |
     - name: libretime-storage
