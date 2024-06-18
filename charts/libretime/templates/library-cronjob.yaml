@@ -4,7 +4,7 @@ metadata:
   name: library-scan
   namespace: radio
 spec:
-  schedule:  {{ .Values.libraryscan.schedule }}
+  schedule:  {{ .Values.libraryscan.schedule | squote }}
   jobTemplate:
     spec:
       template:
