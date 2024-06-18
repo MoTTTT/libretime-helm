@@ -1,0 +1,38 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: library-scan
+  namespace: radio
+spec:
+  schedule:  {{ .Values.library-scan.schedule }}
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: library-scan
+              image: "{{ .Values.api.repository.image }}:{{ .Values.api.repository.tag }}"
+              command: ['sh', '-c', 'run-one libretime-api bulk_import --path /library']
+              resources:
+                requests:
+                  cpu: 500m
+                  memory: 1Gi
+              volumeMounts:
+                - mountPath: /etc/libretime/config.yml
+                  subPath: config.yml
+                  name: libretime-conf
+                  readOnly: true
+                - mountPath: /srv/libretime
+                  name: libretime-storage
+                - mountPath: /library
+                  name: libretime-library
+          restartPolicy: OnFailure
+          volumes:
+            - name: libretime-conf
+              secret:
+                secretName: libretime-conf
+                items:
+                  - key: config.yml
+                    path: config.yml
+{{ .Values.volumes.music | indent 8 }}
+{{ .Values.volumes.library | indent 8 }}
