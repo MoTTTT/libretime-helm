@@ -1,4 +1,4 @@
-library-scan:
+libraryscan:
   schedule: "*/10 * * * *"
 volumes: 
   music: |
