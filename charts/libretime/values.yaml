@@ -23,7 +23,7 @@ publicUrl: https://console.thruhere.net
 publicHost: console.thruhere.net
 streamUrl: https://radio.thruhere.net/main
 streamHost: radio.thruhere.net
-showHost: show.thruhere.net
+showHost: https://show.thruhere.net
 nginx:
   repository:
     image: nginx
