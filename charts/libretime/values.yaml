@@ -3,14 +3,27 @@ volumes:
     - name: libretime-storage
       nfs:
         server: 192.168.1.26
-        path: /Data02/radio
-
+        path: /Data02/thruhere/libretime
+  library: |
+    - name: libretime-library
+      nfs:
+        server: 192.168.1.26
+        path: /Data02/thruhere/library
+  web: |
+    - name: icecast-web
+      nfs:
+        server: 192.168.1.26
+        path: /Data02/thruhere/icecast-web
+  log: |
+    - name: icecast-log
+      nfs:
+        server: 192.168.1.26
+        path: /Data02/thruhere/icecast-log
 publicUrl: https://console.thruhere.net
 publicHost: console.thruhere.net
 streamUrl: https://radio.thruhere.net/main
 streamHost: radio.thruhere.net
 showHost: show.thruhere.net
-
 nginx:
   repository:
     image: nginx
@@ -37,7 +50,7 @@ api:
       cache_ahead_hours: 1
       auth: local
 email:
-  fromaddress: admin@radio.thruhere.net
+  fromaddress: motttt@muso.club
   host: localhost
   port: 25
 postgres:
@@ -87,23 +100,53 @@ legacy:
   service:
     port: 9000
 icecast:
+  location: UK
+  email: motttt@muso.radio
+  limits:
+    clients: 100
+    sources: 6
+    burstsize: 65535
   repository:
     image: ghcr.io/libretime/icecast
     tag: latest
   stream:
-    name: thruhere.fm
+    name: thruhere.net
     mountpoint: main
-    description: thruhere.fm
+    description: thruhere.net
     website: https://www.radio.thruhere.net
-    genre: "thruhere.fm"
+    genre: "thruhere.net"
+    authentication:
+      sourcepassword: libretime
+      relaypassword: libretime
+      adminuser: admin
+      adminpassword: libretime
     passwords:
       source: libretime
       admin: libretime
       relay: libretime
-  service:
+  service: 
     port: 8000
-    streamPort1: 8003
-    streamPort2: 8004
-    streamPort3: 8005
-    streamPort4: 8006
-    streamPort5: 8007
+  paths:
+    basedir: /mnt/basedir
+    logdir: /log/
+    webroot: /web/
+    adminroot: /admin
+    reportxmldb: /report-db.xml
+  mount1:
+    name: stream1
+    username: stream1
+    password: stream1Password
+    intro: stream1Intro.mpg    
+    fallbackmount: /main
+    streamname: "ThruHereStream01"
+    streamdescription: "Stream 1 on ThruHere Radio, a PodZone Project" 
+    streamurl: "https://www.radio.thruhere.net"
+  mount2:
+    name: stream2
+    username: stream2
+    password: stream2Password
+    intro: stream2Intro.mpg
+    fallbackmount: /main
+    streamname: "ThruHereStream02"
+    streamdescription: "Stream 2 on ThruHere Radio, a PodZone Project" 
+    streamurl: "https://www.radio.thruhere.net"
