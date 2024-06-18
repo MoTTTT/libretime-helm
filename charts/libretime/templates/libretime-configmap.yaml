@@ -92,6 +92,7 @@ stringData:
           description: {{ .Values.icecast.stream.description }}
           website: {{ .Values.icecast.stream.website }}
           genre: {{ .Values.icecast.stream.genre }}
+
         icecast:
           - <<: *default_icecast_output
             enabled: true

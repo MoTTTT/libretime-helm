@@ -44,8 +44,7 @@ api:
     general:
       api_key: libretime
       secret_key: libretime
-      allowed_cors_origins:
-        - "https://publicUrl"
+      allowed_cors_origins: []
       timezone: Europe/London
       cache_ahead_hours: 1
       auth: local
