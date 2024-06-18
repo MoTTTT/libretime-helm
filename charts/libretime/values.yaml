@@ -46,7 +46,7 @@ api:
       secret_key: libretime
       allowed_cors_origins:
         - "https://radio.thruhere.net"
-      timezone: Europe/London
+      timezone: UTC
       cache_ahead_hours: 1
       auth: local
 email:
