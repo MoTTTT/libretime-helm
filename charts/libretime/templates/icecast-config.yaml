@@ -19,10 +19,10 @@ data:
             <burst-size>{{ .Values.icecast.limits.burstsize }}</burst-size>
         </limits>
         <authentication>
-            <source-password>{{ .Values.icecast.authentication.sourcepassword }}</source-password>
-            <relay-password>{{ .Values.icecast.authentication.relaypassword }}</relay-password>
-            <admin-user>{{ .Values.icecast.authentication.adminuser }}</admin-user>
-            <admin-password>{{ .Values.icecast.authentication.adminpassword }}</admin-password>
+            <source-password>{{ .Values.icecast.stream.authentication.sourcepassword }}</source-password>
+            <relay-password>{{ .Values.icecast.stream.authentication.relaypassword }}</relay-password>
+            <admin-user>{{ .Values.icecast.stream.authentication.adminuser }}</admin-user>
+            <admin-password>{{ .Values.icecast.stream.authentication.adminpassword }}</admin-password>
         </authentication>
         <listen-socket>
             <port>{{ .Values.icecast.service.port }}</port>
