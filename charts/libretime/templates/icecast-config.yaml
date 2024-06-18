@@ -1,47 +1,74 @@
-<icecast>
-    <location>Earth</location>
-    <admin>icemaster@localhost</admin>
-    <hostname>localhost</hostname>
-    <limits>
-        <clients>100</clients>
-        <sources>2</sources>
-        <queue-size>524288</queue-size>
-        <client-timeout>30</client-timeout>
-        <header-timeout>15</header-timeout>
-        <source-timeout>10</source-timeout>
-        <burst-size>65535</burst-size>
-    </limits>
-    <authentication>
-        <source-password>hackme</source-password>
-        <relay-password>hackme</relay-password>
-        <admin-user>admin</admin-user>
-        <admin-password>hackme</admin-password>
-    </authentication>
-    <listen-socket>
-        <port>8000</port>
-    </listen-socket>
-    <http-headers>
-        <header type="cors" name="Access-Control-Allow-Origin" />
-        <header type="cors" name="Access-Control-Allow-Headers" />
-        <header type="cors" name="Access-Control-Expose-Headers" />
-    </http-headers>
-    <paths>
-        <basedir>@pkgdatadir@</basedir>
-        <logdir>@localstatedir@/log/@PACKAGE@</logdir>
-        <webroot>@pkgdatadir@/web</webroot>
-        <adminroot>@pkgdatadir@/admin</adminroot>
-        <reportxmldb>@pkgdatadir@/report-db.xml</reportxmldb>
-        <alias source="/" destination="/status.xsl"/>
-    </paths>
-    <logging>
-        <accesslog>access.log</accesslog>
-        <errorlog>error.log</errorlog>
-        <loglevel>information</loglevel>
-        <logsize>10000</logsize>
-    </logging>
-    <security>
-        <chroot>false</chroot>
-        <tls-context>
-        </tls-context>
-    </security>
-</icecast>
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: icecast-conf
+data:
+  default.conf: |
+    <icecast>
+        <location>{{ .Values.icecast.location }}</location>
+        <admin>{{ .Values.icecast.email }}</admin>
+        <hostname>{{ .Values.streamHost }}</hostname>
+        <fileserve>1</fileserve>
+        <limits>
+            <clients>{{ .Values.icecast.limits.clients }}</clients>
+            <sources>{{ .Values.icecast.limits.sources }}</sources>
+            <queue-size>524288</queue-size>
+            <client-timeout>30</client-timeout>
+            <header-timeout>15</header-timeout>
+            <source-timeout>10</source-timeout>
+            <burst-size>{{ .Values.icecast.limits.burstsize }}</burst-size>
+        </limits>
+        <authentication>
+            <source-password>{{ .Values.icecast.authentication.sourcepassword }}</source-password>
+            <relay-password>{{ .Values.icecast.authentication.relaypassword }}</relay-password>
+            <admin-user>{{ .Values.icecast.authentication.adminuser }}</admin-user>
+            <admin-password>{{ .Values.icecast.authentication.adminpassword }}</admin-password>
+        </authentication>
+        <listen-socket>
+            <port>{{ .Values.icecast.service.port }}</port>
+        </listen-socket>
+        <http-headers>
+            <header type="cors" name="Access-Control-Allow-Origin" />
+            <header type="cors" name="Access-Control-Allow-Headers" />
+            <header type="cors" name="Access-Control-Expose-Headers" />
+        </http-headers>
+        <paths>
+            <basedir>{{ .Values.icecast.paths.basedir }}</basedir>
+            <logdir>{{ .Values.icecast.paths.logdir }}</logdir>
+            <webroot>{{ .Values.icecast.paths.webroot }}</webroot>
+            <adminroot>{{ .Values.icecast.paths.adminroot }}</adminroot>
+            <reportxmldb>{{ .Values.icecast.paths.reportxmldb }}</reportxmldb>
+            <alias source="/" destination="/status.xsl"/>
+        </paths>
+        <logging>
+            <accesslog>access.log</accesslog>
+            <errorlog>error.log</errorlog>
+            <loglevel>information</loglevel>
+            <logsize>10000</logsize>
+        </logging>
+        <security>
+            <chroot>false</chroot>
+            <tls-context>
+            </tls-context>
+        </security>
+        <mount type="normal">
+            <mount-name>{{ .Values.icecast.mount1.name }}</mount-name>
+            <username>{{ .Values.icecast.mount1.username }}</username>
+            <password>{{ .Values.icecast.mount1.password }}</password>
+            <intro>{{ .Values.icecast.mount1.intro }}</intro>
+            <fallback-mount>{{ .Values.icecast.mount1.fallbackmount }}</fallback-mount>
+            <stream-name>{{ .Values.icecast.mount1.streamname }}</stream-name>
+            <stream-description>{{ .Values.icecast.mount1.streamdescription }}</stream-description>
+            <stream-url>{{ .Values.icecast.mount1.streamurl }}</stream-url>
+        </mount>
+        <mount type="normal">
+            <mount-name>{{ .Values.icecast.mount2.name }}</mount-name>
+            <username>{{ .Values.icecast.mount2.username }}</username>
+            <password>{{ .Values.icecast.mount2.password }}</password>
+            <intro>{{ .Values.icecast.mount2.intro }}</intro>
+            <fallback-mount>{{ .Values.icecast.mount2.fallbackmount }}</fallback-mount>
+            <stream-name>{{ .Values.icecast.mount2.streamname }}</stream-name>
+            <stream-description>{{ .Values.icecast.mount2.streamdescription }}</stream-description>
+            <stream-url>{{ .Values.icecast.mount2.streamurl }}</stream-url>
+        </mount>
+    </icecast>
