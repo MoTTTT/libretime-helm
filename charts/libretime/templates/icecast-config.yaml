@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: icecast-conf
 data:
-  default.conf: |
+  icecast.xml: |
     <icecast>
         <location>{{ .Values.icecast.location }}</location>
         <admin>{{ .Values.icecast.email }}</admin>
