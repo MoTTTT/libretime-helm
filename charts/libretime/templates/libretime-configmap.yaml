@@ -84,7 +84,7 @@ stringData:
       outputs:
         .default_icecast_output: &default_icecast_output
           host: icecast.{{ .Release.Namespace }}.svc.cluster.local
-          public_url: {{ .Values.streamUrl }}
+          public_url: http://liquidsoap.{{ .Release.Namespace }}.svc.cluster.local
           port: {{ .Values.icecast.service.port }}
           source_password: {{ .Values.icecast.stream.passwords.source }}
           admin_password: {{ .Values.icecast.stream.passwords.admin }}
