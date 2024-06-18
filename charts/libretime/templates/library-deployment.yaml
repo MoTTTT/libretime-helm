@@ -20,7 +20,7 @@ spec:
       - name: library
         image: "{{ .Values.api.repository.image }}:{{ .Values.api.repository.tag }}"
 # libretime-api bulk_import --path PATH_THE_DIRECTORY_TO_SCAN
-        command: ['sh', '-c', 'bulk_import --path /library']
+        command: ['sh', '-c', 'libretime-api bulk_import --path /library']
         volumeMounts:
           - mountPath: /etc/libretime/config.yml
             subPath: config.yml
