@@ -34,5 +34,5 @@ spec:
                 items:
                   - key: config.yml
                     path: config.yml
-{{ .Values.volumes.music | indent 8 }}
-{{ .Values.volumes.library | indent 8 }}
+{{ .Values.volumes.music | indent 12 }}
+{{ .Values.volumes.library | indent 12 }}
