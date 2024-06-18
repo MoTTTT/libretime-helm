@@ -1,4 +1,4 @@
-volumes:
+volumes: 
   music: |
     - name: libretime-storage
       nfs:
@@ -44,7 +44,8 @@ api:
     general:
       api_key: libretime
       secret_key: libretime
-      allowed_cors_origins: []
+      allowed_cors_origins:
+        - "https://radio.thruhere.net"
       timezone: Europe/London
       cache_ahead_hours: 1
       auth: local
