@@ -75,4 +75,4 @@ spec:
             items:
               - key: default.conf
                 path: default.conf
-{{ .Values.volumes.music | indent 8 }}
+{{ .Values.volumes.libretime | indent 8 }}
