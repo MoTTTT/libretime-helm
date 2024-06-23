@@ -2,7 +2,6 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: library-scan
-  namespace: radio
 spec:
   schedule:  {{ .Values.libraryscan.schedule | squote }}
   jobTemplate:
@@ -23,9 +22,9 @@ spec:
                   name: libretime-conf
                   readOnly: true
                 - mountPath: /srv/libretime
-                  name: libretime-storage
+                  name: libretime
                 - mountPath: /library
-                  name: libretime-library
+                  name: library
           volumes:
             - name: libretime-conf
               secret:
@@ -33,5 +32,5 @@ spec:
                 items:
                   - key: config.yml
                     path: config.yml
-{{ .Values.volumes.music | indent 12 }}
+{{ .Values.volumes.libretime | indent 12 }}
 {{ .Values.volumes.library | indent 12 }}

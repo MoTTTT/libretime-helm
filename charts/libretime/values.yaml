@@ -1,26 +1,26 @@
 libraryscan:
   schedule: "*/10 * * * *"
 volumes: 
-  music: |
-    - name: libretime-storage
+  libretime: |
+    - name: libretime
       nfs:
         server: 192.168.1.26
-        path: /Data02/thruhere/libretime
+        path: /Data02/radio
   library: |
-    - name: libretime-library
+    - name: library
       nfs:
         server: 192.168.1.26
         path: /Data02/thruhere/library
-  web: |
-    - name: icecast-web
+  icecastweb: |
+    - name: icecastweb
       nfs:
         server: 192.168.1.26
-        path: /Data02/thruhere/icecast-web
-  log: |
-    - name: icecast-log
+        path: /Data02/thruhere/icecastweb
+  dbbackup: |
+    - name: dbbackup
       nfs:
         server: 192.168.1.26
-        path: /Data02/thruhere/icecast-log
+        path: /Data02/radio/backup
 publicUrl: https://console.thruhere.net
 publicHost: console.thruhere.net
 streamUrl: https://radio.thruhere.net/main
@@ -56,17 +56,21 @@ email:
   host: localhost
   port: 25
 postgres:
-  external: false
+  storage:
+    class: ceph-rbd
+    size: 5Gi
+  backup:
+    enabled: true
+    schedule:  "0 0 * * *"
+  restore:
+    enabled: true
+    date: 2024-06-14-00-00
   repository:
     image: postgres
     tag: "16.2"
   secret:
-    existingSecret: "" 
     username: libretime
     password: admin
-    passwordBase64:  YWRtaW4=    # For db statefulset, base64 encoded value. YWRtaW4= "admin"
-  persistence:
-    existingClaim: ""
   service:
     port: 5432
 rabbitmq:
@@ -74,7 +78,6 @@ rabbitmq:
     image: rabbitmq
     tag: 3.12-alpine
   secret:
-    existingSecret: ""
     username: libretime
     password: libretimePassword
   service:
@@ -104,6 +107,7 @@ legacy:
 icecast:
   location: UK
   email: motttt@muso.radio
+  loglevel: information
   limits:
     clients: 100
     sources: 6

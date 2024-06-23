@@ -17,6 +17,24 @@ spec:
         libretime.service: api
     spec:
       initContainers:
+      {{- if eq .Values.postgres.restore.enabled "true" }}
+      - name: restore-db
+        image: "{{ .Values.postgres.repository.image }}:{{ .Values.postgres.repository.tag }}"
+        command:
+          - "/bin/sh"
+          - "-c"
+          - "sudo -u postgres pg_restore --no-owner --no-privileges --dbname=libretime 
+            /mnt/dbbackup-{.Values.postgres.restore.date}sql.gz"
+        env:
+          - name: PGPASSFILE
+            value: /.pgpass
+        volumeMounts:
+          - name: dbbackup
+            mountPath: /mnt
+          - name: pgpass-volume
+            mountPath: /.pgpass
+            subPath: .pgpass
+      {{- else }}
       - name: run-migration
         image: "{{ .Values.api.repository.image }}:{{ .Values.api.repository.tag }}"
         command: ['sh', '-c', 'libretime-api migrate']
@@ -26,7 +44,8 @@ spec:
             name: libretime-conf
             readOnly: true
           - mountPath: /srv/libretime
-            name: libretime-storage
+            name: libretime
+      {{- end }}
       containers:
         - image: "{{ .Values.api.repository.image }}:{{ .Values.api.repository.tag }}"
           name: api
@@ -36,7 +55,7 @@ spec:
               name: libretime-conf
               readOnly: true
             - mountPath: /srv/libretime
-              name: libretime-storage
+              name: libretime
       restartPolicy: Always
       automountServiceAccountToken: false
       volumes:
@@ -46,4 +65,15 @@ spec:
             items:
               - key: config.yml
                 path: config.yml
-{{ .Values.volumes.music | indent 8 }}
+        - name: pgpass-volume
+          secret:
+            secretName: pgpass-secret
+            defaultMode: 384
+{{ .Values.volumes.dbbackup | indent 8 }}
+{{ .Values.volumes.libretime | indent 8 }}
+
+
+
+
+
+

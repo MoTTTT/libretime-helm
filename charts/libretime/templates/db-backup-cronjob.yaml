@@ -1,0 +1,41 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: postgres-backup
+spec:
+  schedule: {{ .Values.postgres.backup.schedule | squote }}
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: db-backup
+              image: "{{ .Values.postgres.repository.image }}:{{ .Values.postgres.repository.tag }}"
+              command:
+                - "/bin/sh"
+                - "-c"
+                - "pg_dump 
+                   -U libretime 
+                   -h postgres 
+                   -p 5432 
+                   -d libretime | gzip > /mnt/libretime_backup-$(date '+%Y-%m-%d-%H-%M')sql.gz 2> /mnt/libretime_backup.log"
+              env:
+                - name: PGPASSFILE
+                  value: /.pgpass
+              resources:
+                requests:
+                  cpu: 500m
+                  memory: 1Gi
+              volumeMounts:
+                - name: dbbackup
+                  mountPath: /mnt
+                - name: pgpass-volume
+                  mountPath: /.pgpass
+                  subPath: .pgpass
+          restartPolicy: OnFailure
+          volumes:
+            - name: pgpass-volume
+              secret:
+                secretName: pgpass-secret
+                defaultMode: 384
+{{ .Values.volumes.dbbackup | indent 10 }}

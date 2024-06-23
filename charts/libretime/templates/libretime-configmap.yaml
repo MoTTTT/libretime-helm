@@ -18,32 +18,14 @@ stringData:
       host: postgres.{{ .Release.Namespace }}.svc.cluster.local
       port: 5432
       name: libretime
-      {{- if .Values.postgres.secret.existingSecret }}
-      {{- $pgObj := (lookup "v1" "Secret" .Release.Namespace .Values.postgres.secret.existingSecret) }}
-      {{- $pgSecretData := (get $pgObj "data") }}
-      {{- $postgresUser := (get $pgSecretData "username") }}
-      {{- $postgresPass := (get $pgSecretData "password") }}
-      user: {{ $postgresUser }}
-      password: {{ $postgresPass }}
-      {{- else }}
       user: {{ .Values.postgres.secret.username }}
       password: {{ .Values.postgres.secret.password }}
-      {{ end }}
     rabbitmq:
       host: rabbitmq
       port: {{ .Values.rabbitmq.service.port }}
       vhost: /libretime
-      {{- if .Values.rabbitmq.secret.existingSecret }}
-      {{- $rmqsecretObj := (lookup "v1" "Secret" .Release.Namespace .Values.rabbitmq.secret.existingSecret) }}
-      {{- $rmqSecretData := (get $rmqsecretObj "data") }}
-      {{- $rabbitmqUser := (get $rmqSecretData "username") }}
-      {{- $rabbitmqPass := (get $rmqSecretData "password") }}
-      user: {{ $rabbitmqUser }}
-      password: {{ $rabbitmqPass }}
-      {{- else }}
       user: {{ .Values.rabbitmq.secret.username }}
       password: {{ .Values.rabbitmq.secret.password }}
-      {{ end }}
     email:
       from_address: {{ .Values.email.fromaddress }}
       host: {{ .Values.email.host }}

@@ -41,10 +41,9 @@ data:
             <alias source="/" destination="/status.xsl"/>
         </paths>
         <logging>
-            <accesslog>access.log</accesslog>
-            <errorlog>error.log</errorlog>
-            <loglevel>information</loglevel>
-            <logsize>10000</logsize>
+            <accesslog>-</accesslog>
+            <errorlog>-</errorlog>
+            <loglevel>{{ .Values.icecast.loglevel }}</loglevel>
         </logging>
         <security>
             <chroot>false</chroot>
