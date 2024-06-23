@@ -17,7 +17,7 @@ spec:
         libretime.service: api
     spec:
       initContainers:
-      {{- if eq .Values.postgres.restore.enabled "true" }}
+      {{- if .Values.postgres.restore.enabled }}
       - name: restore-db
         image: "{{ .Values.postgres.repository.image }}:{{ .Values.postgres.repository.tag }}"
         command:
