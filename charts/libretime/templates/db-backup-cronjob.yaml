@@ -38,4 +38,4 @@ spec:
               secret:
                 secretName: pgpass-secret
                 defaultMode: 384
-{{ .Values.volumes.dbbackup | indent 10 }}
+{{ .Values.volumes.dbbackup | indent 12 }}
