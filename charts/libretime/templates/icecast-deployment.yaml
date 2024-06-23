@@ -23,9 +23,7 @@ spec:
               name: icecast-conf
               readOnly: true
             - mountPath: /web
-              name: icecast-web
-            - mountPath: /log
-              name: icecast-log
+              name: icecastweb
           ports:
             - containerPort: {{ .Values.icecast.service.port }}
               protocol: TCP
@@ -38,5 +36,5 @@ spec:
             items:
               - key: icecast.xml
                 path: icecast.xml
-{{ .Values.volumes.web | indent 8 }}
-{{ .Values.volumes.log | indent 8 }}
+{{ .Values.volumes.icecastweb | indent 8 }}
+
