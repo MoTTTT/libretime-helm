@@ -23,7 +23,7 @@ spec:
         command:
           - "/bin/sh"
           - "-c"
-          - "sudo -u postgres pg_restore --no-owner --no-privileges --dbname=libretime 
+          - "pg_restore -U postgres --no-owner --no-privileges --dbname=libretime 
             /mnt/dbbackup-{.Values.postgres.restore.date}sql.gz"
         env:
           - name: PGPASSFILE
