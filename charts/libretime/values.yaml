@@ -1,5 +1,9 @@
-libraryscan:
-  schedule: "*/10 * * * *"
+publicUrl: https://console.thruhere.net
+publicHost: console.thruhere.net
+streamUrl: https://radio.thruhere.net/main
+streamHost: radio.thruhere.net
+showHost: https://show.thruhere.net
+
 volumes: 
   radiovolume: |
     - name: radiovolume
@@ -11,11 +15,10 @@ volumes:
       nfs:
         server: 192.168.1.26
         path: /Data01/cdcollection
-publicUrl: https://console.thruhere.net
-publicHost: console.thruhere.net
-streamUrl: https://radio.thruhere.net/main
-streamHost: radio.thruhere.net
-showHost: https://show.thruhere.net
+
+libraryscan:
+  schedule: "*/10 * * * *"
+
 nginx:
   repository:
     image: nginx
@@ -26,6 +29,7 @@ nginx:
     annotations:
       cert-manager.io/cluster-issuer: lets-encrypt
       kubernetes.io/ingress.class: nginx
+
 api:
   repository:
     image: ghcr.io/libretime/libretime-api
@@ -41,10 +45,12 @@ api:
       timezone: Europe/London
       cache_ahead_hours: 1
       auth: local
+
 email:
   fromaddress: motttt@muso.club
   host: localhost
   port: 25
+
 postgres:
   storage:
     class: ceph-rbd
@@ -63,6 +69,7 @@ postgres:
     password: admin
   service:
     port: 5432
+
 rabbitmq:
   repository:
     image: rabbitmq
@@ -72,28 +79,7 @@ rabbitmq:
     password: libretimePassword
   service:
     port: 5672
-playout:
-  repository:
-    image: ghcr.io/libretime/libretime-playout
-    tag: latest
-liquidsoap:
-  repository:
-    image: ghcr.io/libretime/libretime-playout
-    tag: latest
-analyzer:
-  repository:
-    image: ghcr.io/libretime/libretime-analyzer
-    tag: latest
-worker:
-  repository:
-    image: ghcr.io/libretime/libretime-worker
-    tag: latest
-legacy:
-  repository:
-    image: ghcr.io/libretime/libretime-legacy
-    tag: latest
-  service:
-    port: 9000
+
 icecast:
   location: UK
   email: motttt@muso.radio
@@ -140,3 +126,26 @@ icecast:
     streamname: "ThruHereStream02"
     streamdescription: "Stream 2 on ThruHere Radio, a PodZone Project" 
     streamurl: "https://www.radio.thruhere.net"
+
+playout:
+  repository:
+    image: ghcr.io/libretime/libretime-playout
+    tag: latest
+liquidsoap:
+  repository:
+    image: ghcr.io/libretime/libretime-playout
+    tag: latest
+analyzer:
+  repository:
+    image: ghcr.io/libretime/libretime-analyzer
+    tag: latest
+worker:
+  repository:
+    image: ghcr.io/libretime/libretime-worker
+    tag: latest
+legacy:
+  repository:
+    image: ghcr.io/libretime/libretime-legacy
+    tag: latest
+  service:
+    port: 9000
