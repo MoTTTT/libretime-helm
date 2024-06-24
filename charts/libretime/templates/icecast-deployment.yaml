@@ -17,7 +17,7 @@ spec:
       initContainers:
       - name: copy-files
         image: {{ .Values.icecast.repository.image }}:{{ .Values.icecast.repository.tag }}
-        command: ['sh', '-c', 'cp -vR ./web/* /mnt']
+        command: ['sh', '-c', 'cp -vR /etc/icecast/icecast2/web/* /mnt']
         volumeMounts:
           - name: radiovolume
             subPath: icecastweb
