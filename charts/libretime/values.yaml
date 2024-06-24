@@ -10,23 +10,7 @@ volumes:
     - name: library
       nfs:
         server: 192.168.1.26
-        path: /Data02/thruhere/library
-
-#  libretime: |
-#    - name: libretime
-#      nfs:
-#        server: 192.168.1.26
-#        path: /Data02/thruhere/libretime
-#  icecastweb: |
-#    - name: icecastweb
-#      nfs:
-#        server: 192.168.1.26
-#        path: /Data02/thruhere/icecastweb
-#  dbbackup: |
-#    - name: dbbackup
-#      nfs:
-#        server: 192.168.1.26
-#        path: /Data02/thruhere/backup
+        path: /Data01/cdcollection
 publicUrl: https://console.thruhere.net
 publicHost: console.thruhere.net
 streamUrl: https://radio.thruhere.net/main
