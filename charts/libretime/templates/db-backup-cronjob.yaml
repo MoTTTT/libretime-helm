@@ -14,7 +14,7 @@ spec:
               command:
                 - "/bin/sh"
                 - "-c"
-                - "pg_dump -Fc libretime > /mnt/dbbackup-$(date '+%Y-%m-%d-%H-%M') 2> /mnt/libretime_backup.log"
+                - "pg_dump -U libretime -h postgres -p 5432 -Fc -f /mnt/dbbackup-$(date '+%Y-%m-%d-%H-%M') libretime 2> /mnt/libretime_backup.log"
               env:
                 - name: PGPASSFILE
                   value: /.pgpass
