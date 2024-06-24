@@ -24,7 +24,7 @@ spec:
           - "/bin/sh"
           - "-c"
           - "pg_restore -U postgres --no-owner --no-privileges --dbname=libretime 
-            /mnt/dbbackup-{.Values.postgres.restore.date}sql.gz"
+            /mnt/libretime_backup-{{.Values.postgres.restore.date}}sql.gz"
         env:
           - name: PGPASSFILE
             value: /.pgpass
