@@ -14,6 +14,7 @@ spec:
       labels:
         libretime.service: icecast
     spec:
+{{- /*
 #      initContainers:
 #      - name: copy-files
 #        image: {{ .Values.icecast.repository.image }}:{{ .Values.icecast.repository.tag }}
@@ -22,9 +23,11 @@ spec:
 #          - name: radiovolume
 #            subPath: icecastweb
 #            mountPath: /mnt
+*/ -}}
       containers:
         - name: icecast
           image: {{ .Values.icecast.repository.image }}:{{ .Values.icecast.repository.tag }}
+{{- /*
 #          volumeMounts:
 #            - mountPath: /etc/icecast.xml
 #              subPath: icecast.xml
@@ -33,11 +36,13 @@ spec:
 #            - mountPath: /web
 #              name: radiovolume
 #              subPath: icecastweb
+*/ -}}
           ports:
             - containerPort: {{ .Values.icecast.service.port }}
               protocol: TCP
       restartPolicy: Always
       automountServiceAccountToken: false
+{{- /*
 #      volumes:
 #        - name: icecast-conf
 #          configMap:
@@ -46,4 +51,4 @@ spec:
 #              - key: icecast.xml
 #                path: icecast.xml
 #{{ .Values.volumes.radiovolume | indent 8 }}
-
+*/ -}}
