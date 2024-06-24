@@ -14,14 +14,14 @@ spec:
       labels:
         libretime.service: icecast
     spec:
-      initContainers:
-      - name: copy-files
-        image: {{ .Values.icecast.repository.image }}:{{ .Values.icecast.repository.tag }}
-        command: ['sh', '-c', 'cp -vR /usr/share/icecast2/web/* /mnt']
-        volumeMounts:
-          - name: radiovolume
-            subPath: icecastweb
-            mountPath: /mnt
+#      initContainers:
+#      - name: copy-files
+#        image: {{ .Values.icecast.repository.image }}:{{ .Values.icecast.repository.tag }}
+#        command: ['sh', '-c', 'cp -vR /usr/share/icecast2/web/* /mnt']
+#        volumeMounts:
+#          - name: radiovolume
+#            subPath: icecastweb
+#            mountPath: /mnt
       containers:
         - name: icecast
           image: {{ .Values.icecast.repository.image }}:{{ .Values.icecast.repository.tag }}
@@ -30,9 +30,9 @@ spec:
               subPath: icecast.xml
               name: icecast-conf
               readOnly: true
-            - mountPath: /web
-              name: radiovolume
-              subPath: icecastweb
+#            - mountPath: /web
+#              name: radiovolume
+#              subPath: icecastweb
           ports:
             - containerPort: {{ .Values.icecast.service.port }}
               protocol: TCP
@@ -45,5 +45,5 @@ spec:
             items:
               - key: icecast.xml
                 path: icecast.xml
-{{ .Values.volumes.radiovolume | indent 8 }}
+#{{ .Values.volumes.radiovolume | indent 8 }}
 
