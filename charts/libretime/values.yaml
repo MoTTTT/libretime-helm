@@ -17,6 +17,7 @@ volumes:
         path: /Data01/cdcollection
 
 libraryscan:
+  enabled: true
   schedule: "*/10 * * * *"
 
 nginx:

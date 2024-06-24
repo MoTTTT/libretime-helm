@@ -1,3 +1,4 @@
+{{- if .Values.postgres.backup.enabled }}
 apiVersion: batch/v1
 kind: CronJob
 metadata:
@@ -36,3 +37,4 @@ spec:
                 secretName: pgpass-secret
                 defaultMode: 384
 {{ .Values.volumes.radiovolume | indent 12 }}
+{{- end }}

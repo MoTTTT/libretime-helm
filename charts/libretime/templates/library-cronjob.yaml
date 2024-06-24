@@ -1,3 +1,4 @@
+{{- if .Values.libraryscan.enabled }}
 apiVersion: batch/v1
 kind: CronJob
 metadata:
@@ -36,3 +37,4 @@ spec:
                     path: config.yml
 {{ .Values.volumes.radiovolume | indent 12 }}
 {{ .Values.volumes.library | indent 12 }}
+{{- end }}
