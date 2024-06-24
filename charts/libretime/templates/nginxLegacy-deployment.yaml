@@ -34,10 +34,10 @@ spec:
             - mountPath: /var/www/html
               name: libretime-assets
             - mountPath: /srv/libretime
-              name: libretime-storage
+              name: libretime
             - mountPath: /tmp
               subPath: ".tmp"
-              name: libretime-storage
+              name: libretime
           ports:
             - containerPort: {{ .Values.legacy.service.port }}
               protocol: TCP
