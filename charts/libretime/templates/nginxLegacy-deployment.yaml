@@ -34,7 +34,8 @@ spec:
             - mountPath: /var/www/html
               name: libretime-assets
             - mountPath: /srv/libretime
-              name: libretime
+              name: radiovolume
+              subPath: libretime
             - mountPath: /tmp
               subPath: ".tmp"
               name: libretime
@@ -51,8 +52,9 @@ spec:
               name: libretime-assets
               readOnly: true
             - mountPath: /srv/libretime
-              name: libretime
+              name: radiovolume
               readOnly: true
+              subPath: libretime
             - mountPath: /etc/nginx/conf.d/default.conf
               subPath: default.conf
               name: nginx-conf
@@ -75,4 +77,4 @@ spec:
             items:
               - key: default.conf
                 path: default.conf
-{{ .Values.volumes.libretime | indent 8 }}
+{{ .Values.volumes.radiovolume | indent 8 }}

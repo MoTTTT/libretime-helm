@@ -14,11 +14,7 @@ spec:
               command:
                 - "/bin/sh"
                 - "-c"
-                - "pg_dump 
-                   -U libretime 
-                   -h postgres 
-                   -p 5432 
-                   -d libretime | gzip > /mnt/libretime_backup-$(date '+%Y-%m-%d-%H-%M')sql.gz 2> /mnt/libretime_backup.log"
+                - "pg_dump -Fc libretime > /mnt/dbbackup-$(date '+%Y-%m-%d-%H-%M') 2> /mnt/libretime_backup.log"
               env:
                 - name: PGPASSFILE
                   value: /.pgpass
@@ -27,8 +23,9 @@ spec:
                   cpu: 500m
                   memory: 1Gi
               volumeMounts:
-                - name: dbbackup
+                - name: radiovolume
                   mountPath: /mnt
+                  subPath: backup
                 - name: pgpass-volume
                   mountPath: /.pgpass
                   subPath: .pgpass
@@ -38,4 +35,4 @@ spec:
               secret:
                 secretName: pgpass-secret
                 defaultMode: 384
-{{ .Values.volumes.dbbackup | indent 12 }}
+{{ .Values.volumes.radiovolume | indent 12 }}

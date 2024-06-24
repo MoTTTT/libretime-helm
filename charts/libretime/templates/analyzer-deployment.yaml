@@ -29,7 +29,8 @@ spec:
               name: libretime-conf
               readOnly: true
             - mountPath: /srv/libretime
-              name: libretime
+              name: radiovolume
+              subPath: libretime
       restartPolicy: Always
       volumes:
         - name: libretime-conf
@@ -38,4 +39,4 @@ spec:
             items:
               - key: config.yml
                 path: config.yml
-{{ .Values.volumes.libretime | indent 8 }}
+{{ .Values.volumes.radiovolume | indent 8 }}

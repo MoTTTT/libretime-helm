@@ -19,17 +19,22 @@ spec:
       initContainers:
       {{- if .Values.postgres.restore.enabled }}
       - name: restore-db
-        image: "{{ .Values.api.repository.image }}:{{ .Values.api.repository.tag }}"
-        command: ['sh', '-c', 'libretime-api dbshell < /mnt/libretime_backup-{{.Values.postgres.restore.date}}sql.gz']
+        image: "{{ .Values.postgres.repository.image }}:{{ .Values.postgres.repository.tag }}"
+        command:
+          - "/bin/sh"
+          - "-c"
+          - "pg_restore -U postgres --no-owner --no-privileges --dbname=libretime 
+            /mnt/dbbackup-{{ .Values.postgres.restore.date }}"
+        env:
+          - name: PGPASSFILE
+            value: /.pgpass
         volumeMounts:
-          - mountPath: /etc/libretime/config.yml
-            subPath: config.yml
-            name: libretime-conf
-            readOnly: true
-          - mountPath: /srv/libretime
-            name: libretime
-          - name: dbbackup
+          - name: radiovolume
             mountPath: /mnt
+            subPath: backup
+          - name: pgpass-volume
+            mountPath: /.pgpass
+            subPath: .pgpass
       {{- else }}
       - name: run-migration
         image: "{{ .Values.api.repository.image }}:{{ .Values.api.repository.tag }}"
@@ -40,7 +45,8 @@ spec:
             name: libretime-conf
             readOnly: true
           - mountPath: /srv/libretime
-            name: libretime
+            name: radiovolume
+            subPath: libretime
       {{- end }}
       containers:
         - image: "{{ .Values.api.repository.image }}:{{ .Values.api.repository.tag }}"
@@ -51,7 +57,8 @@ spec:
               name: libretime-conf
               readOnly: true
             - mountPath: /srv/libretime
-              name: libretime
+              name: radiovolume
+              subPath: libretime
       restartPolicy: Always
       automountServiceAccountToken: false
       volumes:
@@ -65,8 +72,8 @@ spec:
           secret:
             secretName: pgpass-secret
             defaultMode: 384
-{{ .Values.volumes.dbbackup | indent 8 }}
-{{ .Values.volumes.libretime | indent 8 }}
+{{ .Values.volumes.radiovolume | indent 8 }}
+
 
 
 

@@ -23,7 +23,8 @@ spec:
                   name: libretime-conf
                   readOnly: true
                 - mountPath: /srv/libretime
-                  name: libretime
+                  name: radiovolume
+                  subPath: libretime
                 - mountPath: /library
                   name: library
           volumes:
@@ -33,5 +34,5 @@ spec:
                 items:
                   - key: config.yml
                     path: config.yml
-{{ .Values.volumes.libretime | indent 12 }}
+{{ .Values.volumes.radiovolume | indent 12 }}
 {{ .Values.volumes.library | indent 12 }}

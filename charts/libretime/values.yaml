@@ -1,26 +1,32 @@
 libraryscan:
   schedule: "*/10 * * * *"
 volumes: 
-  libretime: |
-    - name: libretime
+  radiovolume: |
+    - name: radiovolume
       nfs:
         server: 192.168.1.26
-        path: /Data02/radio
+        path: /Data02/thruhere
   library: |
     - name: library
       nfs:
         server: 192.168.1.26
         path: /Data02/thruhere/library
-  icecastweb: |
-    - name: icecastweb
-      nfs:
-        server: 192.168.1.26
-        path: /Data02/thruhere/icecastweb
-  dbbackup: |
-    - name: dbbackup
-      nfs:
-        server: 192.168.1.26
-        path: /Data02/radio/backup
+
+#  libretime: |
+#    - name: libretime
+#      nfs:
+#        server: 192.168.1.26
+#        path: /Data02/thruhere/libretime
+#  icecastweb: |
+#    - name: icecastweb
+#      nfs:
+#        server: 192.168.1.26
+#        path: /Data02/thruhere/icecastweb
+#  dbbackup: |
+#    - name: dbbackup
+#      nfs:
+#        server: 192.168.1.26
+#        path: /Data02/thruhere/backup
 publicUrl: https://console.thruhere.net
 publicHost: console.thruhere.net
 streamUrl: https://radio.thruhere.net/main

@@ -23,7 +23,8 @@ spec:
               name: icecast-conf
               readOnly: true
             - mountPath: /web
-              name: icecastweb
+              name: radiovolume
+              subPath: icecastweb
           ports:
             - containerPort: {{ .Values.icecast.service.port }}
               protocol: TCP
@@ -36,5 +37,5 @@ spec:
             items:
               - key: icecast.xml
                 path: icecast.xml
-{{ .Values.volumes.icecastweb | indent 8 }}
+{{ .Values.volumes.radiovolume | indent 8 }}
 
