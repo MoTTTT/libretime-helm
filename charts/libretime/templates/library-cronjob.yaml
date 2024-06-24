@@ -8,6 +8,7 @@ spec:
     spec:
       template:
         spec:
+          restartPolicy: Never
           containers:
             - name: library-scan
               image: "{{ .Values.api.repository.image }}:{{ .Values.api.repository.tag }}"
