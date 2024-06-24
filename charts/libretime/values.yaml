@@ -122,12 +122,6 @@ icecast:
       relay: libretime
   service: 
     port: 8000
-  paths:
-    basedir: /mnt/basedir
-    logdir: /log/
-    webroot: /web/
-    adminroot: /admin
-    reportxmldb: /report-db.xml
   mount1:
     name: stream1
     username: stream1

@@ -8,7 +8,11 @@ Chart.yaml has also been updated to refer to this repo, and myself as maintainer
 
 ## Notes
 
+- Default root icecast directory for libretime docker image is: </usr/share/icecast>
+
 ### Icecast scratch, for volume debugging
+
+Vanilla Icecast deployment:
 
 ```yaml
 apiVersion: apps/v1
@@ -27,47 +31,72 @@ spec:
       labels:
         libretime.service: icecast
     spec:
-{{- /*
-#      initContainers:
-#      - name: copy-files
-#        image: {{ .Values.icecast.repository.image }}:{{ .Values.icecast.repository.tag }}
-#        command: ['sh', '-c', 'cp -vR /usr/share/icecast2/web/* /mnt']
-#        volumeMounts:
-#          - name: radiovolume
-#            subPath: icecastweb
-#            mountPath: /mnt
-*/ -}}
       containers:
-        - name: icecast
+        - envFrom:
+          - secretRef:
+              name: icecast-passwords
           image: {{ .Values.icecast.repository.image }}:{{ .Values.icecast.repository.tag }}
-{{- /*
-#          volumeMounts:
-#            - mountPath: /etc/icecast.xml
-#              subPath: icecast.xml
-#              name: icecast-conf
-#              readOnly: true
-#            - mountPath: /web
-#              name: radiovolume
-#              subPath: icecastweb
-*/ -}}
+          name: icecast
           ports:
             - containerPort: {{ .Values.icecast.service.port }}
               protocol: TCP
       restartPolicy: Always
       automountServiceAccountToken: false
-{{- /*
-#      volumes:
-#        - name: icecast-conf
-#          configMap:
-#            name: icecast-conf
-#            items:
-#              - key: icecast.xml
-#                path: icecast.xml
-#{{ .Values.volumes.radiovolume | indent 8 }}
-*/ -}}
 
 ```
 
+With volumes for config and web:
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    libretime.service: icecast
+  name: icecast
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      libretime.service: icecast
+  template:
+    metadata:
+      labels:
+        libretime.service: icecast
+    spec:
+      initContainers:
+      - name: copy-files
+        image: {{ .Values.icecast.repository.image }}:{{ .Values.icecast.repository.tag }}
+        command: ['sh', '-c', 'cp -vR /usr/share/icecast/web/* /mnt']
+        volumeMounts:
+          - name: radiovolume
+            subPath: icecastweb
+            mountPath: /mnt
+      containers:
+        - name: icecast
+          image: {{ .Values.icecast.repository.image }}:{{ .Values.icecast.repository.tag }}
+          volumeMounts:
+            - mountPath: /etc/icecast.xml
+              subPath: icecast.xml
+              name: icecast-conf
+              readOnly: true
+            - mountPath: /usr/share/icecast/web
+              name: radiovolume
+              subPath: icecastweb
+          ports:
+            - containerPort: {{ .Values.icecast.service.port }}
+              protocol: TCP
+      restartPolicy: Always
+      automountServiceAccountToken: false
+      volumes:
+        - name: icecast-conf
+          configMap:
+            name: icecast-conf
+            items:
+              - key: icecast.xml
+                path: icecast.xml
+{{ .Values.volumes.radiovolume | indent 8 }}
+```
 
 ## Storage
 

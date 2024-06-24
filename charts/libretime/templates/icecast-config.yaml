@@ -33,11 +33,11 @@ data:
             <header type="cors" name="Access-Control-Expose-Headers" />
         </http-headers>
         <paths>
-            <basedir>{{ .Values.icecast.paths.basedir }}</basedir>
-            <logdir>{{ .Values.icecast.paths.logdir }}</logdir>
-            <webroot>{{ .Values.icecast.paths.webroot }}</webroot>
-            <adminroot>{{ .Values.icecast.paths.adminroot }}</adminroot>
-            <reportxmldb>{{ .Values.icecast.paths.reportxmldb }}</reportxmldb>
+            <basedir>/usr/share/icecast</basedir>
+            <logdir>/usr/share/icecast/log</logdir>
+            <webroot>/usr/share/icecast/web</webroot>
+            <adminroot>/usr/share/icecast/admin</adminroot>
+            <reportxmldb>/usr/share/icecast/report-db.xml</reportxmldb>
             <alias source="/" destination="/status.xsl"/>
         </paths>
         <logging>
