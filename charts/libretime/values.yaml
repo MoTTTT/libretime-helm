@@ -69,7 +69,7 @@ postgres:
     enabled: true
     schedule:  "0 0 * * *"
   restore:
-    enabled: true
+    enabled: false
     date: 2024-06-14-00-00
   repository:
     image: postgres
