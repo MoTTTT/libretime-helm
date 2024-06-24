@@ -12,7 +12,7 @@ spec:
           containers:
             - name: library-scan
               image: "{{ .Values.api.repository.image }}:{{ .Values.api.repository.tag }}"
-              command: ['sh', '-c', 'flock -n /srv/libretime/library-scan.lock libretime-api bulk_import --path /library']
+              command: ['sh', '-c', 'flock -n /srv/libretime/library-scan.lock libretime-api bulk_import --path /library 2>> /mnt/libretime/libretime_scan.log']
               resources:
                 requests:
                   cpu: 500m
