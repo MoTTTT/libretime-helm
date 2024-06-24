@@ -25,11 +25,11 @@ spec:
       containers:
         - name: icecast
           image: {{ .Values.icecast.repository.image }}:{{ .Values.icecast.repository.tag }}
-          volumeMounts:
-            - mountPath: /etc/icecast.xml
-              subPath: icecast.xml
-              name: icecast-conf
-              readOnly: true
+#          volumeMounts:
+#            - mountPath: /etc/icecast.xml
+#              subPath: icecast.xml
+#              name: icecast-conf
+#              readOnly: true
 #            - mountPath: /web
 #              name: radiovolume
 #              subPath: icecastweb
@@ -38,12 +38,12 @@ spec:
               protocol: TCP
       restartPolicy: Always
       automountServiceAccountToken: false
-      volumes:
-        - name: icecast-conf
-          configMap:
-            name: icecast-conf
-            items:
-              - key: icecast.xml
-                path: icecast.xml
+#      volumes:
+#        - name: icecast-conf
+#          configMap:
+#            name: icecast-conf
+#            items:
+#              - key: icecast.xml
+#                path: icecast.xml
 #{{ .Values.volumes.radiovolume | indent 8 }}
 
