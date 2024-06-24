@@ -19,21 +19,17 @@ spec:
       initContainers:
       {{- if .Values.postgres.restore.enabled }}
       - name: restore-db
-        image: "{{ .Values.postgres.repository.image }}:{{ .Values.postgres.repository.tag }}"
-        command:
-          - "/bin/sh"
-          - "-c"
-          - "pg_restore -U postgres --no-owner --no-privileges --dbname=libretime 
-            /mnt/libretime_backup-{{.Values.postgres.restore.date}}sql.gz"
-        env:
-          - name: PGPASSFILE
-            value: /.pgpass
+        image: "{{ .Values.api.repository.image }}:{{ .Values.api.repository.tag }}"
+        command: ['sh', '-c', 'libretime-api dbshell < /mnt/libretime_backup-{{.Values.postgres.restore.date}}sql.gz']
         volumeMounts:
+          - mountPath: /etc/libretime/config.yml
+            subPath: config.yml
+            name: libretime-conf
+            readOnly: true
+          - mountPath: /srv/libretime
+            name: libretime
           - name: dbbackup
             mountPath: /mnt
-          - name: pgpass-volume
-            mountPath: /.pgpass
-            subPath: .pgpass
       {{- else }}
       - name: run-migration
         image: "{{ .Values.api.repository.image }}:{{ .Values.api.repository.tag }}"
