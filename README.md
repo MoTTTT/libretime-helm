@@ -6,6 +6,69 @@ It has been adjusted to use nginx as ingress, rather than traefik, because nginx
 
 Chart.yaml has also been updated to refer to this repo, and myself as maintainer.
 
+## Notes
+
+### Icecast scratch, for volume debugging
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    libretime.service: icecast
+  name: icecast
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      libretime.service: icecast
+  template:
+    metadata:
+      labels:
+        libretime.service: icecast
+    spec:
+{{- /*
+#      initContainers:
+#      - name: copy-files
+#        image: {{ .Values.icecast.repository.image }}:{{ .Values.icecast.repository.tag }}
+#        command: ['sh', '-c', 'cp -vR /usr/share/icecast2/web/* /mnt']
+#        volumeMounts:
+#          - name: radiovolume
+#            subPath: icecastweb
+#            mountPath: /mnt
+*/ -}}
+      containers:
+        - name: icecast
+          image: {{ .Values.icecast.repository.image }}:{{ .Values.icecast.repository.tag }}
+{{- /*
+#          volumeMounts:
+#            - mountPath: /etc/icecast.xml
+#              subPath: icecast.xml
+#              name: icecast-conf
+#              readOnly: true
+#            - mountPath: /web
+#              name: radiovolume
+#              subPath: icecastweb
+*/ -}}
+          ports:
+            - containerPort: {{ .Values.icecast.service.port }}
+              protocol: TCP
+      restartPolicy: Always
+      automountServiceAccountToken: false
+{{- /*
+#      volumes:
+#        - name: icecast-conf
+#          configMap:
+#            name: icecast-conf
+#            items:
+#              - key: icecast.xml
+#                path: icecast.xml
+#{{ .Values.volumes.radiovolume | indent 8 }}
+*/ -}}
+
+```
+
+
 ## Storage
 
 Mount analysis from v 0.0.3
