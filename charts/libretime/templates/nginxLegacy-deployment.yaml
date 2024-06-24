@@ -51,7 +51,7 @@ spec:
               name: libretime-assets
               readOnly: true
             - mountPath: /srv/libretime
-              name: libretime-storage
+              name: libretime
               readOnly: true
             - mountPath: /etc/nginx/conf.d/default.conf
               subPath: default.conf
