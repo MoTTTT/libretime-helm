@@ -38,7 +38,7 @@ spec:
               subPath: libretime
             - mountPath: /tmp
               subPath: ".tmp"
-              name: libretime
+              name: radiovolume
           ports:
             - containerPort: {{ .Values.legacy.service.port }}
               protocol: TCP
