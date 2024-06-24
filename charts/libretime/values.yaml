@@ -38,7 +38,7 @@ api:
       secret_key: libretime
       allowed_cors_origins:
         - "https://radio.thruhere.net"
-      timezone: UTC
+      timezone: Europe/London
       cache_ahead_hours: 1
       auth: local
 email:
@@ -51,7 +51,7 @@ postgres:
     size: 5Gi
   backup:
     enabled: true
-    schedule:  "0 0 * * *"
+    schedule:  "0 * * * *"
   restore:
     enabled: false
     date: 2024-06-14-00-00
