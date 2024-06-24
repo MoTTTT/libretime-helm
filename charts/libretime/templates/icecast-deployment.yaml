@@ -14,6 +14,14 @@ spec:
       labels:
         libretime.service: icecast
     spec:
+      initContainers:
+      - name: copy-files
+        image: {{ .Values.icecast.repository.image }}:{{ .Values.icecast.repository.tag }}
+        command: ['sh', '-c', 'cp -vR /web/* /mnt']
+        volumeMounts:
+          - name: radiovolume
+            subPath: icecastweb
+            mountPath: /mnt
       containers:
         - name: icecast
           image: {{ .Values.icecast.repository.image }}:{{ .Values.icecast.repository.tag }}
