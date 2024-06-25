@@ -11,36 +11,36 @@ spec:
         spec:
           restartPolicy: Never
           containers:
-            - name: library-scan
-              image: "{{ .Values.api.repository.image }}:{{ .Values.api.repository.tag }}"
-              command:
-                - '/bin/sh'
-                - '-c'
-                - 'echo "Starting scan of {{ .Values.volumes.library }}." && 
-                    pwd && 
-                    ls -al && 
-                    flock -n /srv/libretime/scan.lock libretime-api bulk_import --path /library 2> /srv/libretime/scan.log'
-              resources:
-                requests:
-                  cpu: 500m
-                  memory: 1Gi
-              volumeMounts:
-                - mountPath: /etc/libretime/config.yml
-                  subPath: config.yml
-                  name: libretime-conf
-                  readOnly: true
-                - mountPath: /srv/libretime
-                  name: radiovolume
-                  subPath: libretime
-                - mountPath: /library
-                  name: library
+          - name: library-scan
+            image: "{{ .Values.api.repository.image }}:{{ .Values.api.repository.tag }}"
+            command:
+            - /bin/sh
+            - -c
+            - echo Starting scan of {{ .Values.volumes.library }}.; 
+                pwd;
+                ls -al; 
+                flock -n /srv/libretime/scan.lock libretime-api bulk_import --path /library 2> /srv/libretime/scan.log
+            resources:
+              requests:
+                cpu: 500m
+                memory: 1Gi
+            volumeMounts:
+            - mountPath: /etc/libretime/config.yml
+              subPath: config.yml
+              name: libretime-conf
+              readOnly: true
+            - mountPath: /srv/libretime
+              name: radiovolume
+              subPath: libretime
+            - mountPath: /library
+              name: library
           volumes:
-            - name: libretime-conf
-              secret:
-                secretName: libretime-conf
-                items:
-                  - key: config.yml
-                    path: config.yml
+          - name: libretime-conf
+            secret:
+              secretName: libretime-conf
+              items:
+              - key: config.yml
+                path: config.yml
 {{ .Values.volumes.radiovolume | indent 12 }}
 {{ .Values.volumes.library | indent 12 }}
 {{- end }}

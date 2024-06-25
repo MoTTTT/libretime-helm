@@ -10,31 +10,32 @@ spec:
       template:
         spec:
           containers:
-            - name: db-backup
-              image: {{ .Values.postgres.repository.image }}:{{ .Values.postgres.repository.tag }}
-              command:
-                - '/bin/sh'
-                - '-c'
-                - 'echo Starting Backup. && pwd && ls -al && pg_dump -U libretime -h postgres -p 5432 -Fc -f /mnt/dbbackup-$(date '+%Y-%m-%d-%H-%M') libretime 2> /mnt/backup.log'
-              env:
-                - name: PGPASSFILE
-                  value: /.pgpass
-              resources:
-                requests:
-                  cpu: 500m
-                  memory: 1Gi
-              volumeMounts:
-                - name: radiovolume
-                  mountPath: /mnt
-                  subPath: backup
-                - name: pgpass-volume
-                  mountPath: /.pgpass
-                  subPath: .pgpass
+          - name: db-backup
+            image: {{ .Values.postgres.repository.image }}:{{ .Values.postgres.repository.tag }}
+            command:
+            - /bin/sh
+            - -c
+            - echo Starting Backup; pwd; ls -al; echo $PGPASSFILE;
+              pg_dump -U libretime -h postgres -p 5432 -Fc -f /mnt/dbbackup-$(date '+%Y-%m-%d-%H-%M') libretime 2> /mnt/backup.log;
+            env:
+            - name: PGPASSFILE
+              value: /.pgpass
+            resources:
+              requests:
+                cpu: 500m
+                memory: 1Gi
+            volumeMounts:
+            - name: radiovolume
+              mountPath: /mnt
+              subPath: backup
+            - name: pgpass-volume
+              mountPath: /.pgpass
+              subPath: .pgpass
           restartPolicy: OnFailure
           volumes:
-            - name: pgpass-volume
-              secret:
-                secretName: pgpass-secret
-                defaultMode: 384
+          - name: pgpass-volume
+            secret:
+              secretName: pgpass-secret
+              defaultMode: 384
 {{ .Values.volumes.radiovolume | indent 12 }}
 {{- end }}
