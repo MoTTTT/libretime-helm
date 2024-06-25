@@ -21,11 +21,11 @@ spec:
         - name: restore-db
           image: "{{ .Values.postgres.repository.image }}:{{ .Values.postgres.repository.tag }}"
           command:
-          - /bin/sh
-          - -c
-          - echo Starting restore of dbbackup-{{ .Values.postgres.restore.date }}.;
-              pwd; cd ~; ls -al; echo $PGPASSFILE;
-              pg_restore -d libretime -h postgres -p 5432 /mnt/dbbackup-{{ .Values.postgres.restore.date }}
+            - /bin/sh
+            - -c
+            - echo Starting restore of dbbackup-{{ .Values.postgres.restore.date }}.;
+                pwd; cd ~; ls -al; echo $PGPASSFILE;
+                pg_restore -d libretime -h postgres -p 5432 /mnt/dbbackup-{{ .Values.postgres.restore.date }}
           env:
             - name: PGPASSFILE
               value: ~/.pgpass
