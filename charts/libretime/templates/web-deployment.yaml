@@ -40,12 +40,12 @@ spec:
               subPath: ".tmp"
               name: radiovolume
           ports:
-            - containerPort: {{ .Values.legacy.service.port }}
+            - containerPort: 9000
               protocol: TCP
         - image: {{ .Values.nginx.repository.image }}:{{ .Values.nginx.repository.tag }}
           name: nginx
           ports:
-            - containerPort: {{ .Values.nginx.service.port }}
+            - containerPort: 8080
               protocol: TCP
           volumeMounts:
             - mountPath: /var/www/html

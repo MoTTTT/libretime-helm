@@ -34,7 +34,7 @@ spec:
               name: radiovolume
               subPath: icecastweb
           ports:
-            - containerPort: {{ .Values.icecast.service.port }}
+            - containerPort: 8000
               protocol: TCP
       restartPolicy: Always
       automountServiceAccountToken: false
