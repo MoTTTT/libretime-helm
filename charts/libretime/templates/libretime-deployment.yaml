@@ -24,11 +24,17 @@ spec:
             - /bin/sh
             - -c
             - echo Starting restore of dbbackup-{{ .Values.postgres.restore.date }}.;
-                PGPASSWORD={{ .Values.postgres.secret.password  }} pg_restore -U postgres -c -d libretime -h postgres -p 5432 /mnt/dbbackup-{{ .Values.postgres.restore.date }} 2> /mnt/restore.log
+                pg_restore -d libretime -h postgres -p 5432 /mnt/dbbackup-{{ .Values.postgres.restore.date }} 2> /mnt/restore.log
+          env:
+            - name: PGPASSFILE
+              value: ~/.pgpass
           volumeMounts:
             - name: radiovolume
               mountPath: /mnt
               subPath: backup
+            - name: pgpass-volume
+              mountPath: /.pgpass
+              subPath: .pgpass
       {{- else }}
         - name: run-migration
           image: "{{ .Values.api.repository.image }}:{{ .Values.api.repository.tag }}"
@@ -62,7 +68,19 @@ spec:
             items:
               - key: config.yml
                 path: config.yml
+        - name: pgpass-volume
+          secret:
+            secretName: pgpass-secret
+            defaultMode: 384
 {{ .Values.volumes.radiovolume | indent 8 }}
+
+
+
+
+
+
+
+
 
 
 
