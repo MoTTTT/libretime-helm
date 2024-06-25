@@ -15,8 +15,8 @@ spec:
               command:
                 - /bin/sh
                 - -c
-                - echo Starting Backup; pwd; ls -al; echo $PGPASSFILE;
-                  pg_dump -U libretime -h postgres -p 5432 -Fc -f /mnt/dbbackup-$(date '+%Y-%m-%d-%H-%M') libretime 2> /mnt/backup.log;
+                - "echo Starting Backup; pwd; ls -al; echo $PGPASSFILE;
+                  pg_dump -U libretime -h postgres -p 5432 -Fc -f /mnt/dbbackup-$(date '+%Y-%m-%d-%H-%M') libretime 2> /mnt/backup.log;"
               env:
                 - name: PGPASSFILE
                   value: /.pgpass
