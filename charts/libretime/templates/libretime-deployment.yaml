@@ -24,7 +24,7 @@ spec:
             - /bin/sh
             - -c
             - echo Starting restore of dbbackup-{{ .Values.postgres.restore.date }}.;
-                pwd; cd ~; ls -al; echo $PGPASSFILE;
+                pwd; cp .pgpass ~.pgpass; cd ~; ls -al; echo $PGPASSFILE;
                 pg_restore -d libretime -h postgres -p 5432 /mnt/dbbackup-{{ .Values.postgres.restore.date }}
           env:
             - name: PGPASSFILE
@@ -34,8 +34,8 @@ spec:
               mountPath: /mnt
               subPath: backup
             - name: pgpass-volume
-              mountPath: ~/.pgpass
-              subPath: ~.pgpass
+              mountPath: /.pgpass
+              subPath: .pgpass
       {{- else }}
         - name: run-migration
           image: "{{ .Values.api.repository.image }}:{{ .Values.api.repository.tag }}"
