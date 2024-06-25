@@ -23,10 +23,10 @@ spec:
         command:
           - "/bin/sh"
           - "-c"
-          - "pg_restore -d libretime -h postgres -p 5432 /mnt/dbbackup-{{ .Values.postgres.restore.date }}"
+          - "ls -al && cp .pgpass .pgpass1 && ls -al && chmod 0600 .pgpass1 && pg_restore -d libretime -h postgres -p 5432 /mnt/dbbackup-{{ .Values.postgres.restore.date }}"
         env:
           - name: PGPASSFILE
-            value: /.pgpass
+            value: /.pgpass1
         volumeMounts:
           - name: radiovolume
             mountPath: /mnt
