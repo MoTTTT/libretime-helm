@@ -24,7 +24,7 @@ spec:
             - /bin/sh
             - -c
             - echo Starting restore of dbbackup-{{ .Values.postgres.restore.date }}.;
-                PGPASSWORD={{ .Values.postgres.secret.password  }} pg_restore -U postgres -c -d libretime -h postgres -p 5432 /mnt/dbbackup-{{ .Values.postgres.restore.date }}
+                PGPASSWORD={{ .Values.postgres.secret.password  }} pg_restore -U postgres -c -d libretime -h postgres -p 5432 /mnt/dbbackup-{{ .Values.postgres.restore.date }} 2> /mnt/restore.log
           volumeMounts:
             - name: radiovolume
               mountPath: /mnt
