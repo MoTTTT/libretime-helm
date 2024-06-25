@@ -24,7 +24,8 @@ spec:
             - /bin/sh
             - -c
             - echo Starting restore of dbbackup-{{ .Values.postgres.restore.date }}.;
-                pg_restore -d libretime -h postgres -p 5432 /mnt/dbbackup-{{ .Values.postgres.restore.date }} 2> /mnt/restore.log
+                pwd; ls -al; cp .pgpass ~/.pgpass; cd ~; ls -al; echo $PGPASSFILE;
+                PGPASSWORD={{ .Values.postgres.secret.password  }} pg_restore -U postgres -d libretime -h postgres -p 5432 /mnt/dbbackup-{{ .Values.postgres.restore.date }}
           env:
             - name: PGPASSFILE
               value: ~/.pgpass
@@ -73,14 +74,6 @@ spec:
             secretName: pgpass-secret
             defaultMode: 384
 {{ .Values.volumes.radiovolume | indent 8 }}
-
-
-
-
-
-
-
-
 
 
 
