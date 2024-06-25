@@ -24,7 +24,7 @@ spec:
             - /bin/sh
             - -c
             - echo Starting restore of dbbackup-{{ .Values.postgres.restore.date }}.;
-                pwd; cp .pgpass ~.pgpass; cd ~; ls -al; echo $PGPASSFILE;
+                pwd; ls -al; cp .pgpass ~/.pgpass; cd ~; ls -al; echo $PGPASSFILE;
                 pg_restore -d libretime -h postgres -p 5432 /mnt/dbbackup-{{ .Values.postgres.restore.date }}
           env:
             - name: PGPASSFILE
