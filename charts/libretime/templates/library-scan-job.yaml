@@ -11,29 +11,29 @@ spec:
         spec:
           restartPolicy: Never
           containers:
-          - name: library-scan
-            image: "{{ .Values.api.repository.image }}:{{ .Values.api.repository.tag }}"
-            command:
-            - /bin/sh
-            - -c
-            - echo Starting scan of {{ .Values.volumes.library }}.; 
-                pwd;
-                ls -al; 
-                flock -n /srv/libretime/scan.lock libretime-api bulk_import --path /library 2> /srv/libretime/scan.log
-            resources:
-              requests:
-                cpu: 500m
-                memory: 1Gi
-            volumeMounts:
-              - mountPath: /etc/libretime/config.yml
-                subPath: config.yml
-                name: libretime-conf
-                readOnly: true
-              - mountPath: /srv/libretime
-                name: radiovolume
-                subPath: libretime
-              - mountPath: /library
-                name: library
+            - name: library-scan
+              image: "{{ .Values.api.repository.image }}:{{ .Values.api.repository.tag }}"
+              command:
+              - /bin/sh
+              - -c
+              - echo Starting scan of {{ .Values.volumes.library }}.; 
+                  pwd;
+                  ls -al; 
+                  flock -n /srv/libretime/scan.lock libretime-api bulk_import --path /library 2> /srv/libretime/scan.log
+              resources:
+                requests:
+                  cpu: 500m
+                  memory: 1Gi
+              volumeMounts:
+                - mountPath: /etc/libretime/config.yml
+                  subPath: config.yml
+                  name: libretime-conf
+                  readOnly: true
+                - mountPath: /srv/libretime
+                  name: radiovolume
+                  subPath: libretime
+                - mountPath: /library
+                  name: library
           volumes:
             - name: libretime-conf
               secret:
