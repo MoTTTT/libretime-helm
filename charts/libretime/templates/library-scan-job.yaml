@@ -35,12 +35,12 @@ spec:
             - mountPath: /library
               name: library
           volumes:
-          - name: libretime-conf
-            secret:
-              secretName: libretime-conf
-              items:
-              - key: config.yml
-                path: config.yml
+            - name: libretime-conf
+              secret:
+                secretName: libretime-conf
+                items:
+                - key: config.yml
+                  path: config.yml
 {{ .Values.volumes.radiovolume | indent 12 }}
 {{ .Values.volumes.library | indent 12 }}
 {{- end }}

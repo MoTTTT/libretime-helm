@@ -33,9 +33,9 @@ spec:
               subPath: .pgpass
           restartPolicy: OnFailure
           volumes:
-          - name: pgpass-volume
-            secret:
-              secretName: pgpass-secret
-              defaultMode: 384
+            - name: pgpass-volume
+              secret:
+                secretName: pgpass-secret
+                defaultMode: 384
 {{ .Values.volumes.radiovolume | indent 12 }}
 {{- end }}
