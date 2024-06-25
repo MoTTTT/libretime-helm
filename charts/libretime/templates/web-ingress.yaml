@@ -20,7 +20,7 @@ spec:
               service:
                 name: web
                 port:
-                  number: {{ .Values.nginx.service.port }}
+                  number: 8080
             path: /
             pathType: ImplementationSpecific
 
