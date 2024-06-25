@@ -19,7 +19,7 @@ spec:
           image: "{{ .Values.postgres.repository.image }}:{{ .Values.postgres.repository.tag }}"
           imagePullPolicy: "IfNotPresent"
           ports:
-            - containerPort: {{ .Values.postgres.service.port }}
+            - containerPort: 5432
           envFrom:
             - configMapRef:
                 name: postgres-config

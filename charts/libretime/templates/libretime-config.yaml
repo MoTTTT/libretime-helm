@@ -22,7 +22,7 @@ stringData:
       password: {{ .Values.postgres.secret.password }}
     rabbitmq:
       host: rabbitmq
-      port: {{ .Values.rabbitmq.service.port }}
+      port: 5672
       vhost: /libretime
       user: {{ .Values.rabbitmq.secret.username }}
       password: {{ .Values.rabbitmq.secret.password }}
@@ -67,7 +67,7 @@ stringData:
         .default_icecast_output: &default_icecast_output
           host: icecast.{{ .Release.Namespace }}.svc.cluster.local
           public_url: http://liquidsoap.{{ .Release.Namespace }}.svc.cluster.local
-          port: {{ .Values.icecast.service.port }}
+          port: 8000
           source_password: {{ .Values.icecast.stream.passwords.source }}
           admin_password: {{ .Values.icecast.stream.passwords.admin }}
           name: {{ .Values.icecast.stream.name }}

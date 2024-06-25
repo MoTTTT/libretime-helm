@@ -21,23 +21,25 @@ spec:
       - name: restore-db
         image: "{{ .Values.postgres.repository.image }}:{{ .Values.postgres.repository.tag }}"
         command:
-          - "/bin/sh"
-          - "-c"
-          - "ls -al && cp .pgpass .pgpass1 && ls -al && chmod 0600 .pgpass1 && pg_restore -d libretime -h postgres -p 5432 /mnt/dbbackup-{{ .Values.postgres.restore.date }}"
+          - '/bin/sh'
+          - '-c'
+          - 'echo "Starting restore of dbbackup-{{ .Values.postgres.restore.date }}." 
+              && pwd && cd ~ && ls -al && && echo $PGPASSFILE &&
+              pg_restore -d libretime -h postgres -p 5432 /mnt/dbbackup-{{ .Values.postgres.restore.date }}'
         env:
           - name: PGPASSFILE
-            value: /.pgpass1
+            value: ~/.pgpass
         volumeMounts:
           - name: radiovolume
             mountPath: /mnt
             subPath: backup
           - name: pgpass-volume
-            mountPath: /.pgpass
-            subPath: .pgpass
+            mountPath: ~/.pgpass
+            subPath: ~.pgpass
       {{- else }}
       - name: run-migration
         image: "{{ .Values.api.repository.image }}:{{ .Values.api.repository.tag }}"
-        command: ['sh', '-c', 'libretime-api migrate']
+        command: ['sh', '-c', 'echo "Creating a new database." && pwd && ls -al && libretime-api migrate']
         volumeMounts:
           - mountPath: /etc/libretime/config.yml
             subPath: config.yml

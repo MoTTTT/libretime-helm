@@ -68,8 +68,8 @@ postgres:
   secret:
     username: libretime
     password: admin
-  service:
-    port: 5432
+#  service:
+#    port: 5432
 
 rabbitmq:
   repository:
@@ -78,8 +78,8 @@ rabbitmq:
   secret:
     username: libretime
     password: libretimePassword
-  service:
-    port: 5672
+#  service:
+#    port: 5672
 
 icecast:
   location: UK
@@ -107,8 +107,8 @@ icecast:
       source: libretime
       admin: libretime
       relay: libretime
-  service: 
-    port: 8000
+  # service: 
+  #  port: 8000
   mount1:
     name: stream1
     username: stream1
