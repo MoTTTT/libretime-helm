@@ -6,8 +6,8 @@ metadata:
   name: api
 spec:
   ports:
-    - name: {{ .Values.api.service.port | quote }}
-      port: {{ .Values.api.service.port }}
-      targetPort: {{ .Values.api.service.port }}
+    - name: "8080"
+      port: 8080
+      targetPort: 8080
   selector:
     libretime.service: api

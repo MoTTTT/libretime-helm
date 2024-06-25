@@ -6,8 +6,8 @@ metadata:
   name: web
 spec:
   ports:
-    - name: "{{ .Values.nginx.service.port }}"
-      port: {{ .Values.nginx.service.port }}
-      targetPort: {{ .Values.nginx.service.port }}
+    - name: "8080"
+      port: 8080
+      targetPort: 8080
   selector:
     libretime.service: web

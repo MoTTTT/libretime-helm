@@ -24,8 +24,8 @@ nginx:
   repository:
     image: nginx
     tag: latest
-  service:
-    port: 8080
+#  service:
+#    port: 8080
   ingress:
     annotations:
       cert-manager.io/cluster-issuer: lets-encrypt
@@ -35,8 +35,8 @@ api:
   repository:
     image: ghcr.io/libretime/libretime-api
     tag: latest
-  service:
-    port: 9001
+#  service:
+#    port: 9001
   config:
     general:
       api_key: libretime
@@ -148,5 +148,5 @@ legacy:
   repository:
     image: ghcr.io/libretime/libretime-legacy
     tag: latest
-  service:
-    port: 9000
+#  service:
+#    port: 9000

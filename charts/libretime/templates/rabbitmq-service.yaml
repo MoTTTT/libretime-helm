@@ -6,8 +6,8 @@ metadata:
   name: rabbitmq
 spec:
   ports:
-    - name: "{{ .Values.rabbitmq.service.port }}"
-      port: {{ .Values.rabbitmq.service.port }}
-      targetPort: {{ .Values.rabbitmq.service.port }}
+    - name: "5672"
+      port: 5672
+      targetPort: 5672
   selector:
     libretime.service: rabbitmq

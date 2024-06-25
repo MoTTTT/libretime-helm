@@ -5,8 +5,8 @@ metadata:
 data:
   default.conf: |
     server {
-      listen {{ .Values.nginx.service.port }};
-      listen [::]:{{ .Values.nginx.service.port }};
+      listen 8080; 
+      listen [::]:8080;
 
       root /var/www/html/public;
 
@@ -30,7 +30,7 @@ data:
         include fastcgi_params;
 
         fastcgi_index index.php;
-        fastcgi_pass 127.0.0.1:{{ .Values.legacy.service.port }};
+        fastcgi_pass 127.0.0.1:9000;
       }
 
       location / {
@@ -44,7 +44,7 @@ data:
         proxy_set_header X-Forwarded-Proto $scheme;
 
         proxy_redirect off;
-        proxy_pass http://api:{{ .Values.api.service.port }};
+        proxy_pass http://api:9001;
       }
 
       # Internal path for serving media files from the API.
