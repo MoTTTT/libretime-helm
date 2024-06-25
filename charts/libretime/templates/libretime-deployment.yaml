@@ -25,8 +25,7 @@ spec:
             - -c
             - echo Starting restore of dbbackup-{{ .Values.postgres.restore.date }}.;
                 pwd; ls -al; cp .pgpass ~/.pgpass; cd ~; ls -al; echo $PGPASSFILE;
-                export PGPASSWORD={{ .Values.postgres.secret.password | quote }}
-                pg_restore -d libretime -h postgres -p 5432 /mnt/dbbackup-{{ .Values.postgres.restore.date }}
+                PGPASSWORD={{ .Values.postgres.secret.password  }} pg_restore -d libretime -h postgres -p 5432 /mnt/dbbackup-{{ .Values.postgres.restore.date }}
           env:
             - name: PGPASSFILE
               value: ~/.pgpass
