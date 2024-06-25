@@ -42,7 +42,7 @@ api:
       api_key: libretime
       secret_key: libretime
       allowed_cors_origins:
-        - "https://radio.thruhere.net"
+        - "https://publicUrl"
       timezone: Europe/London
       cache_ahead_hours: 1
       auth: local

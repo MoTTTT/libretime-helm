@@ -17,8 +17,6 @@ spec:
                 - /bin/sh
                 - -c
                 - "echo Starting scan of {{ .Values.volumes.library }}.; 
-                    pwd;
-                    ls -al; 
                     flock -n /srv/libretime/scan.lock libretime-api bulk_import --path /library 2> /srv/libretime/scan.log"
               resources:
                 requests:
