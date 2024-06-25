@@ -25,15 +25,15 @@ spec:
                 cpu: 500m
                 memory: 1Gi
             volumeMounts:
-            - mountPath: /etc/libretime/config.yml
-              subPath: config.yml
-              name: libretime-conf
-              readOnly: true
-            - mountPath: /srv/libretime
-              name: radiovolume
-              subPath: libretime
-            - mountPath: /library
-              name: library
+              - mountPath: /etc/libretime/config.yml
+                subPath: config.yml
+                name: libretime-conf
+                readOnly: true
+              - mountPath: /srv/libretime
+                name: radiovolume
+                subPath: libretime
+              - mountPath: /library
+                name: library
           volumes:
             - name: libretime-conf
               secret:

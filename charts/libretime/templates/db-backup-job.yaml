@@ -25,12 +25,12 @@ spec:
                 cpu: 500m
                 memory: 1Gi
             volumeMounts:
-            - name: radiovolume
-              mountPath: /mnt
-              subPath: backup
-            - name: pgpass-volume
-              mountPath: /.pgpass
-              subPath: .pgpass
+              - name: radiovolume
+                mountPath: /mnt
+                subPath: backup
+              - name: pgpass-volume
+                mountPath: /.pgpass
+                subPath: .pgpass
           restartPolicy: OnFailure
           volumes:
             - name: pgpass-volume
