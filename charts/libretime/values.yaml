@@ -64,6 +64,7 @@ postgres:
     image: postgres
     tag: "16.2"
   secret:
+    existingSecret: false
     username: libretime
     password: admin
   service:
@@ -74,6 +75,7 @@ rabbitmq:
     image: rabbitmq
     tag: 3.12-alpine
   secret:
+    existingSecret: false
     username: libretime
     password: libretimePassword
   service:
