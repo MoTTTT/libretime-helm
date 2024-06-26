@@ -54,12 +54,12 @@ stringData:
     stream: 
       inputs:
         main:
-          public_url: {{ .Values.showHost }}
+          public_url: http://liquidsoap.{{ .Release.Namespace }}.svc.cluster.local
           mount: {{ .Values.icecast.stream.mountpoint }}
           port: 8001
           secure: false
         show:
-          public_url: {{ .Values.showHost }}
+          public_url: {{ .Values.streamUrl }}
           mount: show
           port: 8002
           secure: false

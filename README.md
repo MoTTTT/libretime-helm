@@ -1,99 +1,56 @@
 # LibreTime Helm Chart
 
-This repo is forked from the public repo at <https://github.com/unbelauscht/libretime-helm/>, which does not have a licence file, so hope that's ok.
+This repo is forked from the public repo at <https://github.com/unbelauscht/libretime-helm/>, which does not have a licence file, so hope that's ok. I have not previously done an installation of libretime with all it's components, so this chart was invaluable to me as a starting point.
 
-It has been adjusted to use nginx as ingress, rather than traefik, because nginx ingress is already in use.
+The original README.md file has been retained, with some notes on the top, as READMEOriginal.md.
 
-Chart.yaml has also been updated to refer to this repo, and myself as maintainer.
+## Features
 
-## Notes
+- Uses the libretime docker images unmodified, including the icecast one. Libretime rocks!
+- Automated, scheduled backup of the libretime database
+- Optional database restore, as an alternative for `libretime-api migrate` during deployment
+- Ingresses and certificates for web component (legacy and api) and icecast
+- Library directory scanning and upload, using `libretime-api bulk_import`
+- Configurable Icecast, for decoupling incoming streams from libretime, and configuring fallback etc.
 
-- Default root icecast directory for libretime docker image is: </usr/share/icecast>
+## Dependencies
 
-## Storage
+I have tested this installation on a self-hosted microk8s cluster. The following section describes the deployment environment:
 
-Mount analysis from v 0.0.3
+### Storage
 
-- analyzer: /srv/libretime from libretime-storage (rw)
-- api: /srv/libretime from libretime-storage (rw)
-- icecast: none: need mounted directory for mount fallback tracks
-- liquidsoap-playout: /app from libretime-playout (rw)
-- postgress: none???
-- rabitmq: none
-- web copy-files: /appdata from libretime-assets (rw)
-- web legacy: /srv/libretime from libretime-storage(rw)
-- web legacy: /tmp from libretime-storage (rw,path=".tmp")
-- web nginx: /srv/libretime from libretime-storage (ro)
-- worker: none
+NFS volumes for:
 
-- libretime-playout: emptyDir; no problem
-- libretime-storage/srv/libretime: needs to be rw mounted for analyzer, api, web.legacy, and ro for web.nginx
-- libretime-storage/tmp: web.legacy
+- `/srv/libretime`
+- backup
+- Audio track library
 
-## Original README.md
+Ceph-rbd volume for:
 
-### Installation & Configuration
+- postgres data volume
 
-This is an example `values.yaml` file with parameters you may want to modify.
+### k8s configuration
 
-It's recommended to change anything that looks like a password.
+- Microk8s installed: `sudo snap install microk8s --channel=1.29/stable --classic`. Microk8s rocks!
+- Microk8s addons installed: cert-manager, rook-ceph,  metrics-server (optional), metallb
+- Microk8s connect-external-ceph, connecting to a self-hosted ceph cluster. Ceph rocks!
 
-```yaml
-# Volume to store your uploaded music
-volumes:
-  music: |
-    - name: libretime-storage # don't change the volume name
-      nfs:
-        server: nas
-        path: /LibretimeMusic
+### k8s infrastructure assets
 
-# Can also be a PVC, just make sure it exists.
-# volumes:
-#   music: |
-#     - name: libretime-storage
-#       persistentVolumeClaim:
-#         claimName: libretime-storage
+- ingress-nginx: adding values to support TCP ingress for icecast streams is optional, but http/s ingresses use `ingressClassName: nginx`
+- Cluster-issuer: This supports the ingress annotation `cert-manager.io/cluster-issuer: lets-encrypt`
+- Adminer: Ths is a db access tool. Installation is not required for the chart to function. Adminer is useful for understanding the db schema, and doing analysis of loaded tracks etc.
 
-publicUrl: https://radio.example.com:443
-publicHost: radio.example.net
-streamUrl: https://stream.example.com/main
-streamHost: stream.example.com
+### GitOps
 
-api:
-  config:
-    general:
-      api_key: libretime
-      secret_key: libretime
-      allowed_cors_origins:
-        - "https://publicUrl"
-postgres:
-  external: false
-  secret:
-    existingSecret: "" # prod: set the name of your secret to keep your data safe
-    # or change these values
-    username: libretime
-    password: libretime
-  persistence:
-    existingClaim: "" # prod: set the name of your PVC to keep your data
-rabbitmq:
-  secret:
-    existingSecret: "" # prod: set the name of your secret to keep your data safe
-    username: libretime
-    password: libretime
-icecast:
-  stream:
-    name: Libretime.fm
-    mountpoint: main
-    description: Libretime.fm
-    website: https://radio.example.com
-    genre: "Libretime.fm"
-    passwords:
-      source: libretime
-      admin: libretime
-      relay: libretime
-  ingress:
-    auth:
-      enabled: false # requires traefik
-      username: listener
-      password: libretime
-```
+I am using gitops to install this helm chart, and the assets listed above. GitOps rocks!
+
+The flux source repo for the dev installation is here: https://github.com/MoTTTT/podzonedev-gitops. Flex rocks!
+
+### Deployment environment
+
+- DEV: 2 X HP T630s with 24GB RAM
+- Ubuntu 22.04 minimised
+- microk8s installed and clustered
+- ISP Router configured with port-forwarding for http/s ingress, and icecast protocol TCP ports.
+- Production: The production environment has three k8s nodes, but is otherwise the same.
