@@ -4,70 +4,194 @@ metadata:
   name: libretime-conf
 stringData:
   config.yml: |
+    # See https://libretime.org/docs/admin-manual/setup/configuration/
+
     general:
+      # The public url.
+      # > this field is REQUIRED
       public_url: {{ .Values.publicUrl }}
+      # The internal API authentication key.
+      # > this field is REQUIRED
       api_key: {{ .Values.api.config.general.api_key }}
+      # The Django API secret key.
+      # > this field is REQUIRED
       secret_key: {{ .Values.api.config.general.secret_key }}
-      allowed_cors_origins: {{ .Values.api.config.general.allowed_cors_origins | toYaml | nindent 6 }}
+
+      # List of origins allowed to access resources on the server, the public url
+      # origin is automatically included.
+      # > default is []
+      allowed_cors_origins: []
+
+      # The server timezone, should be a lookup key in the IANA time zone database,
+      # for example Europe/Berlin.
+      # > default is UTC
       timezone: {{ .Values.api.config.general.timezone }}
+
+      # How many hours ahead Playout should cache scheduled media files.
+      # > default is 1
       cache_ahead_hours: {{ .Values.api.config.general.cache_ahead_hours }}
+
+      # Authentication adaptor to use for the legacy service, specify a class like
+      # LibreTime_Auth_Adaptor_FreeIpa to replace the built-in adaptor.
+      # > default is local
       auth: {{ .Values.api.config.general.auth }}
+
     storage:
+      # Path of the storage directory. Make sure to update the Nginx configuration after
+      # updating the storage path.
+      # > default is /srv/libretime
       path: /srv/libretime
+
     database:
+      # The hostname of the PostgreSQL server.
+      # > default is localhost
       host: postgres.{{ .Release.Namespace }}.svc.cluster.local
       port: 5432
       name: libretime
+      {{- if .Values.postgres.secret.existingSecret }}
+      {{- $pgObj := (lookup "v1" "Secret" .Release.Namespace .Values.postgres.secret.existingSecret) }}
+      {{- $pgSecretData := (get $pgObj "data") }}
+      {{- $postgresUser := (get $pgSecretData "username") }}
+      {{- $postgresPass := (get $pgSecretData "password") }}
+      user: {{ $postgresUser }}
+      password: {{ $postgresPass }}
+      {{- else }}
       user: {{ .Values.postgres.secret.username }}
       password: {{ .Values.postgres.secret.password }}
+      {{ end }}
+
     rabbitmq:
       host: rabbitmq
-      port: 5672
+      port: {{ .Values.rabbitmq.service.port }}
+      # The virtual host of RabbitMQ server.
+      # > default is /libretime
       vhost: /libretime
+      {{- if .Values.rabbitmq.secret.existingSecret }}
+      {{- $rmqsecretObj := (lookup "v1" "Secret" .Release.Namespace .Values.rabbitmq.secret.existingSecret) }}
+      {{- $rmqSecretData := (get $rmqsecretObj "data") }}
+      {{- $rabbitmqUser := (get $rmqSecretData "username") }}
+      {{- $rabbitmqPass := (get $rmqSecretData "password") }}
+      user: {{ $rabbitmqUser }}
+      password: {{ $rabbitmqPass }}
+      {{- else }}
       user: {{ .Values.rabbitmq.secret.username }}
       password: {{ .Values.rabbitmq.secret.password }}
+      {{ end }}
+
     email:
+      # Sender email address to use when sending emails.
+      # > default is no-reply@libretime.org
       from_address: {{ .Values.email.fromaddress }}
+
+      # The hostname of the SMTP server.
+      # > default is localhost
       host: {{ .Values.email.host }}
+      # The port of the SMTP server.
+      # > default is 25
       port: {{ .Values.email.port }}
+      # Whether to use an insecure connection, an SSL/TLS (implicit) connection (generally
+      # on port 465) or a STARTTLS (explicit) connection (generally on port 587) when
+      # talking to the SMTP server.
+      # > must be one of (ssl/tls, starttls)
       encryption:
+      # The username to use for the SMTP server.
+      # > default is ""
       user: ""
+      # The password to use for the SMTP server.
+      # > default is ""
       password: ""
+      # Timeout in seconds for blocking operations like the connection attempt.
       timeout:
+      # The path to a PEM-formatted certificate chain file to use for the connection.
       cert_file:
+      # The path to a PEM-formatted private key file to use for the connection.
       key_file:
+
     playout:
+      # Liquidsoap connection host.
+      # > default is localhost
       liquidsoap_host: 127.0.0.1
+      # Liquidsoap connection port.
+      # > default is 1234
       liquidsoap_port: 1234
-      record_file_format: mp3
+
+      # The format for recordings.
+      # > must be one of (ogg, mp3)
+      # > default is ogg
+      record_file_format: ogg
+      # The bitrate for recordings.
+      # > default is 256
       record_bitrate: 256
+      # The samplerate for recordings.
+      # > default is 44100
       record_samplerate: 44100
+      # The number of channels for recordings.
+      # > default is 2
       record_channels: 2
+      # The sample size for recordings.
+      # > default is 16
       record_sample_size: 16
+
     liquidsoap:
+      # Liquidsoap server listen address.
+      # > default is 127.0.0.1
       server_listen_address: 127.0.0.1
+      # Liquidsoap server listen port.
+      # > default is 1234
       server_listen_port: 1234
+
+      # Input harbor listen address.
+      # > default is ["0.0.0.0"]
       harbor_listen_address: ["0.0.0.0"]
+
+      # Input harbor tls certificate path.
       harbor_ssl_certificate:
+      # Input harbor tls certificate private key path.
       harbor_ssl_private_key:
+      # Input harbor tls certificate password.
       harbor_ssl_password:
-    stream: 
+
+    stream:
+      # Inputs sources. 
       inputs:
+        # Main harbor input.
         main:
+          # Harbor input public url. If not defined, the value will be generated from
+          # the [general.public_url] hostname, the input port and mount.
           public_url: http://liquidsoap.{{ .Release.Namespace }}.svc.cluster.local
+          # Mount point for the main harbor input.
+          # > default is main
           mount: {{ .Values.icecast.stream.mountpoint }}
+          # Listen port for the main harbor input.
+          # > default is 8001
           port: 8001
+          # Whether the input harbor is secured with the tls certificate.
+          # > default is false
           secure: false
+
+        # Show harbor input.
         show:
+          # Harbor input public url. If not defined, the value will be generated from
+          # the [general.public_url] hostname, the input port and mount.
           public_url: {{ .Values.streamUrl }}
+          # Mount point for the show harbor input.
+          # > default is show
           mount: show
+          # Listen port for the show harbor input.
+          # > default is 8002
           port: 8002
+          # Whether the input harbor is secured with the tls certificate.
+          # > default is false
           secure: false
+
+      # Output streams.
       outputs:
+        # Default icecast output
+        # This can be reused to define multiple outputs without duplicating data
         .default_icecast_output: &default_icecast_output
           host: icecast.{{ .Release.Namespace }}.svc.cluster.local
           public_url: {{ .Values.streamUrl }}
-          port: 8000
+          port: {{ .Values.icecast.service.port }}
           source_password: {{ .Values.icecast.stream.passwords.source }}
           admin_password: {{ .Values.icecast.stream.passwords.admin }}
           name: {{ .Values.icecast.stream.name }}
@@ -75,7 +199,10 @@ stringData:
           website: {{ .Values.icecast.stream.website }}
           genre: {{ .Values.icecast.stream.genre }}
 
+        # Icecast output streams.
+        # > max items is 3
         icecast:
+          # The default Icecast output stream
           - <<: *default_icecast_output
             enabled: true
             mount: {{ .Values.icecast.stream.mountpoint }}
@@ -84,3 +211,4 @@ stringData:
               bitrate: 256
               enable_metadata: false
             mobile: false
+            

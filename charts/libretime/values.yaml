@@ -2,7 +2,6 @@ publicUrl: https://console.thruhere.net
 publicHost: console.thruhere.net
 streamUrl: https://radio.thruhere.net/main
 streamHost: radio.thruhere.net
-showHost: https://show.thruhere.net
 
 volumes: 
   radiovolume: |
@@ -24,8 +23,8 @@ nginx:
   repository:
     image: nginx
     tag: latest
-#  service:
-#    port: 8080
+  service:
+    port: 8080
   ingress:
     annotations:
       cert-manager.io/cluster-issuer: lets-encrypt
@@ -35,14 +34,13 @@ api:
   repository:
     image: ghcr.io/libretime/libretime-api
     tag: latest
-#  service:
-#    port: 9001
+  service:
+    port: 9001
   config:
     general:
       api_key: libretime
       secret_key: libretime
-      allowed_cors_origins:
-        - "https://publicUrl"
+      allowed_cors_origins: []
       timezone: Europe/London
       cache_ahead_hours: 1
       auth: local
@@ -68,8 +66,8 @@ postgres:
   secret:
     username: libretime
     password: admin
-#  service:
-#    port: 5432
+  service:
+    port: 5432
 
 rabbitmq:
   repository:
@@ -78,8 +76,8 @@ rabbitmq:
   secret:
     username: libretime
     password: libretimePassword
-#  service:
-#    port: 5672
+  service:
+    port: 5672
 
 icecast:
   location: UK
@@ -107,8 +105,8 @@ icecast:
       source: libretime
       admin: libretime
       relay: libretime
-  # service: 
-  #  port: 8000
+  service: 
+    port: 8000
   mount1:
     name: stream1
     username: stream1
@@ -148,5 +146,5 @@ legacy:
   repository:
     image: ghcr.io/libretime/libretime-legacy
     tag: latest
-#  service:
-#    port: 9000
+  service:
+    port: 9000
