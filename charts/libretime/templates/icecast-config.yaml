@@ -25,7 +25,7 @@ data:
             <admin-password>{{ .Values.icecast.stream.authentication.adminpassword }}</admin-password>
         </authentication>
         <listen-socket>
-            <port>8000</port> 
+            <port>{{ .Values.icecast.service.port }}</port> 
         </listen-socket>
         <http-headers>
             <header type="cors" name="Access-Control-Allow-Origin" />

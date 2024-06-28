@@ -19,7 +19,7 @@ spec:
       containers:
         - env:
             - name: LIBRETIME_GENERAL_PUBLIC_URL
-              value: http://web.{{ .Release.Namespace }}.svc.cluster.local:8080
+              value: http://web.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.nginx.service.port }}
           image: {{ .Values.liquidsoap.repository.image }}:{{ .Values.liquidsoap.repository.tag }}
           name: playout
           volumeMounts:
@@ -33,7 +33,7 @@ spec:
             - /usr/local/bin/libretime-liquidsoap
           env:
             - name: LIBRETIME_GENERAL_PUBLIC_URL
-              value: http://web.{{ .Release.Namespace }}.svc.cluster.local:8080
+              value: http://web.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.nginx.service.port }}
           image: {{ .Values.playout.repository.image }}:{{ .Values.playout.repository.tag }}
           name: liquidsoap
           ports:

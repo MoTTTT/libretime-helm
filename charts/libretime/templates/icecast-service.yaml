@@ -6,8 +6,8 @@ metadata:
   name: icecast
 spec:
   ports:
-    - name: "8000"
-      port: 8000
-      targetPort: 8000
+    - name: "{{ .Values.icecast.service.port }}"
+      port:  {{ .Values.icecast.service.port }}
+      targetPort:  {{ .Values.icecast.service.port }}
   selector:
     libretime.service: icecast
