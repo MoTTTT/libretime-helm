@@ -32,4 +32,4 @@ helm install -f /Users/martincolley/workspace/podzonedev-gitops/radio.thruhere.n
 - < https://hub.helm.sh/charts/jetstack/cert-manager/> vs <quay.io/jetstack/>
 - Canonical position: `Practically, as soon as the admin enables an addon he is expected to own its maintenance. We are offering new versions of the addon enable/disable scripts and in order to get them the admin would need to microk8s addons repo update <repo>` 
 - Ref: <https://github.com/canonical/microk8s-core-addons/issues/255>
-- Resolution: Shift all add-ons to flux.
+- Resolution: Shift all add-ons to flux, Use repo: <https://artifacthub.io/packages/helm/cert-manager/cert-manager>
