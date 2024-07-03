@@ -35,7 +35,7 @@ data:
         <paths>
             <basedir>/usr/share/icecast</basedir>
             <logdir>/usr/share/icecast/log</logdir>
-            <webroot>/usr/share/icecast/web</webroot>
+            <webroot>/web</webroot>
             <adminroot>/usr/share/icecast/admin</adminroot>
             <reportxmldb>/usr/share/icecast/report-db.xml</reportxmldb>
             <alias source="/" destination="/status.xsl"/>
@@ -51,11 +51,10 @@ data:
             </tls-context>
         </security>
         <mount type="normal">
-            <mount-name>{{ .Values.icecast.mount1.name }}</mount-name>
+            <mount-name>{{ .Values.icecast.mount1.name }}</mount-name> 
             <username>{{ .Values.icecast.mount1.username }}</username>
             <password>{{ .Values.icecast.mount1.password }}</password>
             <intro>{{ .Values.icecast.mount1.intro }}</intro>
-            <fallback-mount>{{ .Values.icecast.mount1.fallbackmount }}</fallback-mount>
             <stream-name>{{ .Values.icecast.mount1.streamname }}</stream-name>
             <stream-description>{{ .Values.icecast.mount1.streamdescription }}</stream-description>
             <stream-url>{{ .Values.icecast.mount1.streamurl }}</stream-url>
@@ -65,7 +64,6 @@ data:
             <username>{{ .Values.icecast.mount2.username }}</username>
             <password>{{ .Values.icecast.mount2.password }}</password>
             <intro>{{ .Values.icecast.mount2.intro }}</intro>
-            <fallback-mount>{{ .Values.icecast.mount2.fallbackmount }}</fallback-mount>
             <stream-name>{{ .Values.icecast.mount2.streamname }}</stream-name>
             <stream-description>{{ .Values.icecast.mount2.streamdescription }}</stream-description>
             <stream-url>{{ .Values.icecast.mount2.streamurl }}</stream-url>

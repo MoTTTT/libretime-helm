@@ -110,20 +110,18 @@ icecast:
   service: 
     port: 8000
   mount1:
-    name: stream1
+    name: /stream1
     username: stream1
     password: stream1Password
     intro: stream1Intro.mpg    
-    fallbackmount: /main
     streamname: "ThruHereStream01"
     streamdescription: "Stream 1 on ThruHere Radio, a PodZone Project" 
     streamurl: "https://www.radio.thruhere.net"
   mount2:
-    name: stream2
+    name: /stream2
     username: stream2
     password: stream2Password
     intro: stream2Intro.mpg
-    fallbackmount: /main
     streamname: "ThruHereStream02"
     streamdescription: "Stream 2 on ThruHere Radio, a PodZone Project" 
     streamurl: "https://www.radio.thruhere.net"
